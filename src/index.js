@@ -1,3 +1,7 @@
-module.exports = function () {
-  return 3;
+const Interpreter = require('./interpreter/Interpreter');
+
+module.exports = function (input) {
+  const interpreter = new Interpreter(input);
+
+  return interpreter.expr();
 };
