@@ -1,0 +1,30 @@
+{
+  "name": "pascal-interpreter",
+  "version": "1.0.0",
+  "description": "A simple interpreter for a large subset of Pascal language with a source-level debugger written for educational purposes",
+  "license": "MIT",
+  "author": "ghaiklor",
+  "main": "src/index.js",
+  "homepage": "https://github.com/ghaiklor/pascal-interpreter#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ghaiklor/pascal-interpreter.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ghaiklor/pascal-interpreter/issues"
+  },
+  "scripts": {
+    "lint": "eslint --ignore-path .gitignore .",
+    "precommit": "npm run lint && npm run test",
+    "test": "istanbul cover _mocha"
+  },
+  "devDependencies": {
+    "chai": "4.0.2",
+    "eslint": "4.1.1",
+    "eslint-config-node": "1.6.0",
+    "husky": "0.14.1",
+    "istanbul": "0.4.5",
+    "mocha": "3.4.2",
+    "sinon": "2.3.5"
+  }
+}
