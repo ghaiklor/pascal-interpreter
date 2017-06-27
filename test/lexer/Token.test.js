@@ -37,6 +37,7 @@ describe('Lexer::Token', () => {
   it('Should properly return a token types from static getters', () => {
     assert.equal(Token.INTEGER, 'INTEGER');
     assert.equal(Token.PLUS, 'PLUS');
+    assert.equal(Token.MINUS, 'MINUS');
     assert.equal(Token.EOF, 'EOF');
   });
 });
