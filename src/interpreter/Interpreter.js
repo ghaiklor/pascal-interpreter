@@ -8,20 +8,32 @@ class Interpreter {
   }
 
   getNextToken() {
-    const {input, position} = this;
+    if (this.position > this.input.length - 1) return Token.create(Token.EOF, null);
 
-    if (position > input.length - 1) return Token.create(Token.EOF, null);
+    while (this.input[this.position] === ' ') this.position += 1;
 
-    const char = input[position];
+    const char = this.input[this.position];
 
     if (!isNaN(char)) {
-      const token = Token.create(Token.INTEGER, parseInt(char));
+      let number = char;
       this.position += 1;
-      return token;
+
+      while (!isNaN(this.input[this.position])) {
+        number += this.input[this.position];
+        this.position += 1;
+      }
+
+      return Token.create(Token.INTEGER, parseInt(number));
     }
 
     if (char === '+') {
       const token = Token.create(Token.PLUS, char);
+      this.position += 1;
+      return token;
+    }
+
+    if (char === '-') {
+      const token = Token.create(Token.MINUS, char);
       this.position += 1;
       return token;
     }
@@ -44,12 +56,12 @@ class Interpreter {
     this.eat(Token.INTEGER);
 
     // const op = this.currentToken;
-    this.eat(Token.PLUS);
+    this.eat(Token.MINUS);
 
     const right = this.currentToken;
     this.eat(Token.INTEGER);
 
-    return left.getValue() + right.getValue();
+    return left.getValue() - right.getValue();
   }
 
   static error(msg) {

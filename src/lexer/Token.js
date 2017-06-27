@@ -76,6 +76,16 @@ class Token {
   }
 
   /**
+   * Returns a Token type for operator minus.
+   *
+   * @static
+   * @returns {String}
+   */
+  static get MINUS() {
+    return 'MINUS';
+  }
+
+  /**
    * Returns a Token type for end-of-file.
    *
    * @static
