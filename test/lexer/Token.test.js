@@ -20,6 +20,14 @@ describe('Lexer::Token', () => {
     assert.equal(token.getValue(), '2');
   });
 
+  it('Should properly check if token type is equal to specified', () => {
+    const token = Token.create(Token.INTEGER, 234);
+
+    assert.ok(token.is(Token.INTEGER));
+    assert.notOk(token.is(Token.ASTERISK));
+    assert.notOk(token.is(Token.PLUS));
+  });
+
   it('Should properly convert a token into string representation', () => {
     const token = new Token(Token.INTEGER, '2');
 
@@ -38,6 +46,9 @@ describe('Lexer::Token', () => {
     assert.equal(Token.INTEGER, 'INTEGER');
     assert.equal(Token.PLUS, 'PLUS');
     assert.equal(Token.MINUS, 'MINUS');
+    assert.equal(Token.ASTERISK, 'ASTERISK');
+    assert.equal(Token.SLASH, 'SLASH');
+    assert.equal(Token.BACKSLASH, 'BACKSLASH');
     assert.equal(Token.EOF, 'EOF');
   });
 });

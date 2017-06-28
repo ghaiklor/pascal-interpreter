@@ -37,6 +37,21 @@ class Token {
   }
 
   /**
+   * Check if specified token type is this token.
+   *
+   * @param {String} tokenType Token type from {@link Token} static enum
+   * @returns {Boolean}
+   * @example
+   * const token = Token.create(Token.INTEGER, 234);
+   *
+   * token.is(Token.INTEGER); // true
+   * token.is(Token.ASTERISK); // false
+   */
+  is(tokenType) {
+    return this.type === tokenType;
+  }
+
+  /**
    * Converts a token into string representation.
    *
    * @returns {String} Returns a representation in format Token(type, value)
