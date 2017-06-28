@@ -10,6 +10,8 @@ class Token {
    *
    * @param {String} type Token type from {@link Token} static dictionary
    * @param {String} value Value of a token
+   * @example
+   * new Token(Token.INTEGER, 1234);
    */
   constructor(type, value) {
     this.type = type;
@@ -50,13 +52,17 @@ class Token {
    * @param {String} type Token type from {@link Token} static dictionary
    * @param {String} value Value of a token
    * @returns {Token} Returns instantiated instance of a Token
+   * @example
+   * Token.create(Token.INTEGER, 1234);
+   * Token.create(Token.PLUS, '+');
+   * Token.create(Token.INTEGER, 5678);
    */
   static create(type, value) {
     return new this(type, value);
   }
 
   /**
-   * Returns a Token type for integer.
+   * Returns a Token type for an integer.
    *
    * @static
    * @returns {String}
@@ -66,7 +72,7 @@ class Token {
   }
 
   /**
-   * Returns a Token type for operator plus.
+   * Returns a Token type for a plus symbol (+).
    *
    * @static
    * @returns {String}
@@ -76,13 +82,43 @@ class Token {
   }
 
   /**
-   * Returns a Token type for operator minus.
+   * Returns a Token type for a minus symbol (-).
    *
    * @static
    * @returns {String}
    */
   static get MINUS() {
     return 'MINUS';
+  }
+
+  /**
+   * Returns a Token type for an asterisk symbol (*).
+   *
+   * @static
+   * @returns {String}
+   */
+  static get ASTERISK() {
+    return 'ASTERISK';
+  }
+
+  /**
+   * Returns a Token type for a slash sign (/).
+   *
+   * @static
+   * @returns {String}
+   */
+  static get SLASH() {
+    return 'SLASH';
+  }
+
+  /**
+   * Returns a Token type for a backslash sign (\).
+   *
+   * @static
+   * @returns {String}
+   */
+  static get BACKSLASH() {
+    return 'BACKSLASH';
   }
 
   /**

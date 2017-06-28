@@ -56,6 +56,16 @@ class Interpreter {
         return Token.create(Token.MINUS, '-');
       }
 
+      if (this.currentChar === '*') {
+        this.advance();
+        return Token.create(Token.ASTERISK, '*');
+      }
+
+      if (this.currentChar === '/') {
+        this.advance();
+        return Token.create(Token.SLASH, '/');
+      }
+
       Interpreter.error(`Unexpected char: ${this.currentChar}`);
     }
 
@@ -79,12 +89,16 @@ class Interpreter {
     const op = this.currentToken;
     if (op.getType() === Token.PLUS) this.eat(Token.PLUS);
     if (op.getType() === Token.MINUS) this.eat(Token.MINUS);
+    if (op.getType() === Token.ASTERISK) this.eat(Token.ASTERISK);
+    if (op.getType() === Token.SLASH) this.eat(Token.SLASH);
 
     const right = this.currentToken;
     this.eat(Token.INTEGER);
 
     if (op.getType() === Token.PLUS) return left.getValue() + right.getValue();
     if (op.getType() === Token.MINUS) return left.getValue() - right.getValue();
+    if (op.getType() === Token.ASTERISK) return left.getValue() * right.getValue();
+    if (op.getType() === Token.SLASH) return left.getValue() / right.getValue();
   }
 
   static error(msg) {
