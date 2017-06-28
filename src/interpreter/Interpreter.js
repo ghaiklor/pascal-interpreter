@@ -8,7 +8,7 @@ class Interpreter {
   }
 
   eat(tokenType) {
-    if (this.currentToken.getType() === tokenType) {
+    if (this.currentToken.is(tokenType)) {
       this.currentToken = this.scanner.getNextToken();
     } else {
       Interpreter.error(`Unexpected token type: ${tokenType}`);
@@ -21,24 +21,36 @@ class Interpreter {
     return token.getValue();
   }
 
-  expr() {
+  term() {
     let result = this.factor();
 
-    while ([Token.PLUS, Token.MINUS, Token.ASTERISK, Token.SLASH].indexOf(this.currentToken.getType()) !== -1) {
+    while ([Token.ASTERISK, Token.SLASH].indexOf(this.currentToken.getType()) !== -1) {
       const token = this.currentToken;
 
-      if (token.is(Token.PLUS)) {
-        this.eat(Token.PLUS);
-        result += this.factor();
-      } else if (token.is(Token.MINUS)) {
-        this.eat(Token.MINUS);
-        result -= this.factor();
-      } else if (token.is(Token.ASTERISK)) {
+      if (token.is(Token.ASTERISK)) {
         this.eat(Token.ASTERISK);
         result *= this.factor();
       } else if (token.is(Token.SLASH)) {
         this.eat(Token.SLASH);
         result /= this.factor();
+      }
+    }
+
+    return result;
+  }
+
+  expr() {
+    let result = this.term();
+
+    while ([Token.PLUS, Token.MINUS].indexOf(this.currentToken.getType()) !== -1) {
+      const token = this.currentToken;
+
+      if (token.is(Token.PLUS)) {
+        this.eat(Token.PLUS);
+        result += this.term();
+      } else if (token.is(Token.MINUS)) {
+        this.eat(Token.MINUS);
+        result -= this.term();
       }
     }
 

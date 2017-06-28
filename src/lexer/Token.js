@@ -48,7 +48,7 @@ class Token {
    * token.is(Token.ASTERISK); // false
    */
   is(tokenType) {
-    return this.type === tokenType;
+    return this.getType() === tokenType;
   }
 
   /**
