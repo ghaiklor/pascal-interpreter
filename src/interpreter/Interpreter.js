@@ -5,40 +5,61 @@ class Interpreter {
     this.input = input;
     this.position = 0;
     this.currentToken = null;
+    this.currentChar = this.input[this.position];
+  }
+
+  advance() {
+    this.position += 1;
+
+    if (this.position > this.input.length - 1) {
+      this.currentChar = null;
+    } else {
+      this.currentChar = this.input[this.position];
+    }
+  }
+
+  skipWhitespace() {
+    while (this.currentChar && /\s/.test(this.currentChar)) {
+      this.advance();
+    }
+  }
+
+  integer() {
+    let integer = '';
+
+    while (this.currentChar && /\d/.test(this.currentChar)) {
+      integer += this.currentChar;
+      this.advance();
+    }
+
+    return parseFloat(integer);
   }
 
   getNextToken() {
-    if (this.position > this.input.length - 1) return Token.create(Token.EOF, null);
-
-    while (this.input[this.position] === ' ') this.position += 1;
-
-    const char = this.input[this.position];
-
-    if (!isNaN(char)) {
-      let number = char;
-      this.position += 1;
-
-      while (!isNaN(this.input[this.position])) {
-        number += this.input[this.position];
-        this.position += 1;
+    while (this.currentChar) {
+      if (/\s/.test(this.currentChar)) {
+        this.skipWhitespace();
+        continue;
       }
 
-      return Token.create(Token.INTEGER, parseInt(number));
+      if (/\d/.test(this.currentChar)) {
+        return Token.create(Token.INTEGER, this.integer());
+      }
+
+      if (this.currentChar === '+') {
+        this.advance();
+        return Token.create(Token.PLUS, '+');
+      }
+
+      if (this.currentChar === '-') {
+        this.advance();
+        return Token.create(Token.MINUS, '-');
+      }
+
+      Interpreter.error(`Unexpected char: ${this.currentChar}`);
     }
 
-    if (char === '+') {
-      const token = Token.create(Token.PLUS, char);
-      this.position += 1;
-      return token;
-    }
-
-    if (char === '-') {
-      const token = Token.create(Token.MINUS, char);
-      this.position += 1;
-      return token;
-    }
-
-    Interpreter.error(`Unexpected char: ${char}`);
+    return Token.create(Token.EOF, null);
   }
 
   eat(tokenType) {
@@ -55,17 +76,19 @@ class Interpreter {
     const left = this.currentToken;
     this.eat(Token.INTEGER);
 
-    // const op = this.currentToken;
-    this.eat(Token.MINUS);
+    const op = this.currentToken;
+    if (op.getType() === Token.PLUS) this.eat(Token.PLUS);
+    if (op.getType() === Token.MINUS) this.eat(Token.MINUS);
 
     const right = this.currentToken;
     this.eat(Token.INTEGER);
 
-    return left.getValue() - right.getValue();
+    if (op.getType() === Token.PLUS) return left.getValue() + right.getValue();
+    if (op.getType() === Token.MINUS) return left.getValue() - right.getValue();
   }
 
   static error(msg) {
-    throw new Error(msg);
+    throw new Error(`An error, while parsing an input:\n${msg}`);
   }
 }
 
