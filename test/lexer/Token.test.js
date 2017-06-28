@@ -49,6 +49,8 @@ describe('Lexer::Token', () => {
     assert.equal(Token.ASTERISK, 'ASTERISK');
     assert.equal(Token.SLASH, 'SLASH');
     assert.equal(Token.BACKSLASH, 'BACKSLASH');
+    assert.equal(Token.LEFT_PARENTHESIS, 'LEFT_PARENTHESIS');
+    assert.equal(Token.RIGHT_PARENTHESIS, 'RIGHT_PARENTHESIS');
     assert.equal(Token.EOF, 'EOF');
   });
 });

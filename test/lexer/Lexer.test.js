@@ -71,6 +71,19 @@ describe('Lexer', () => {
     assert.equal(lexer.getNextToken(), 'Token(EOF, null)');
   });
 
+  it('Should properly return a stream of tokens for an expression with parenthesis', () => {
+    const lexer = new Lexer('(1 + 2) * 3');
+
+    assert.equal(lexer.getNextToken(), 'Token(LEFT_PARENTHESIS, ()');
+    assert.equal(lexer.getNextToken(), 'Token(INTEGER, 1)');
+    assert.equal(lexer.getNextToken(), 'Token(PLUS, +)');
+    assert.equal(lexer.getNextToken(), 'Token(INTEGER, 2)');
+    assert.equal(lexer.getNextToken(), 'Token(RIGHT_PARENTHESIS, ))');
+    assert.equal(lexer.getNextToken(), 'Token(ASTERISK, *)');
+    assert.equal(lexer.getNextToken(), 'Token(INTEGER, 3)');
+    assert.equal(lexer.getNextToken(), 'Token(EOF, null)');
+  });
+
   it('Should properly throw an error if unknown character', () => {
     const lexer = new Lexer('~');
 

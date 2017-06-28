@@ -101,6 +101,16 @@ class Lexer {
         return Token.create(Token.SLASH, '/');
       }
 
+      if (this.currentChar === '(') {
+        this.advance();
+        return Token.create(Token.LEFT_PARENTHESIS, '(');
+      }
+
+      if (this.currentChar === ')') {
+        this.advance();
+        return Token.create(Token.RIGHT_PARENTHESIS, ')');
+      }
+
       Lexer.error(`Unexpected character: ${this.currentChar}`);
     }
 

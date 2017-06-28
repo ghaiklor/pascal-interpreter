@@ -137,6 +137,26 @@ class Token {
   }
 
   /**
+   * Returns a Token type for a left parenthesis "(".
+   *
+   * @static
+   * @returns {String}
+   */
+  static get LEFT_PARENTHESIS() {
+    return 'LEFT_PARENTHESIS';
+  }
+
+  /**
+   * Returns a Token type for a right parenthesis ")".
+   *
+   * @static
+   * @returns {String}
+   */
+  static get RIGHT_PARENTHESIS() {
+    return 'RIGHT_PARENTHESIS';
+  }
+
+  /**
    * Returns a Token type for end-of-file.
    *
    * @static
