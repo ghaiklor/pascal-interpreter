@@ -80,25 +80,36 @@ class Interpreter {
     }
   }
 
+  term() {
+    const token = this.currentToken;
+    this.eat(Token.INTEGER);
+    return token.getValue();
+  }
+
   expr() {
     this.currentToken = this.getNextToken();
 
-    const left = this.currentToken;
-    this.eat(Token.INTEGER);
+    let result = this.term();
 
-    const op = this.currentToken;
-    if (op.getType() === Token.PLUS) this.eat(Token.PLUS);
-    if (op.getType() === Token.MINUS) this.eat(Token.MINUS);
-    if (op.getType() === Token.ASTERISK) this.eat(Token.ASTERISK);
-    if (op.getType() === Token.SLASH) this.eat(Token.SLASH);
+    while ([Token.PLUS, Token.MINUS, Token.ASTERISK, Token.SLASH].indexOf(this.currentToken.getType()) !== -1) {
+      const token = this.currentToken;
 
-    const right = this.currentToken;
-    this.eat(Token.INTEGER);
+      if (token.getType() === Token.PLUS) {
+        this.eat(Token.PLUS);
+        result += this.term();
+      } else if (token.getType() === Token.MINUS) {
+        this.eat(Token.MINUS);
+        result -= this.term();
+      } else if (token.getType() === Token.ASTERISK) {
+        this.eat(Token.ASTERISK);
+        result *= this.term();
+      } else if (token.getType() === Token.SLASH) {
+        this.eat(Token.SLASH);
+        result /= this.term();
+      }
+    }
 
-    if (op.getType() === Token.PLUS) return left.getValue() + right.getValue();
-    if (op.getType() === Token.MINUS) return left.getValue() - right.getValue();
-    if (op.getType() === Token.ASTERISK) return left.getValue() * right.getValue();
-    if (op.getType() === Token.SLASH) return left.getValue() / right.getValue();
+    return result;
   }
 
   static error(msg) {
