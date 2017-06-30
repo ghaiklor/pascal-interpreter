@@ -22,7 +22,7 @@
     "chai": "4.0.2",
     "eslint": "4.1.1",
     "eslint-config-node": "1.6.0",
-    "husky": "0.14.1",
+    "husky": "0.14.2",
     "istanbul": "0.4.5",
     "mocha": "3.4.2",
     "sinon": "2.3.6"
