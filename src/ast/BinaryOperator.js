@@ -9,9 +9,9 @@ class BinaryOperator extends Node {
   /**
    * Creates an instance of binary operation in AST.
    *
-   * @param {Node} lhs AST Node
-   * @param {Token} op Operand represented as a {@link Token}
-   * @param {Node} rhs AST Node
+   * @param {Node} lhs AST Node (left operand)
+   * @param {Token} op Operator represented as a {@link Token}
+   * @param {Node} rhs AST Node (right operand)
    */
   constructor(lhs, op, rhs) {
     super(op);
@@ -30,11 +30,11 @@ class BinaryOperator extends Node {
   }
 
   /**
-   * Returns an operand in this binary expression.
+   * Returns an operator in this binary expression.
    *
    * @returns {Token}
    */
-  getOperand() {
+  getOperator() {
     return this.token;
   }
 
