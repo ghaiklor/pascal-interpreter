@@ -15,6 +15,9 @@ describe('AST::Node', () => {
     const node = new Node(TOKEN);
 
     assert.instanceOf(node.getToken(), Token);
+    assert.ok(node.getToken().is(Token.INTEGER));
+    assert.equal(node.getToken().getType(), Token.INTEGER);
+    assert.equal(node.getToken().getValue(), 200);
   });
 
   it('Should properly instantiate from static create', () => {

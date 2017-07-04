@@ -46,6 +46,18 @@ class BinaryOperator extends Node {
   getRHS() {
     return this.rhs;
   }
+
+  /**
+   * Static helper for creating new binary nodes.
+   *
+   * @param {Node} lhs
+   * @param {Token} op
+   * @param {Node} rhs
+   * @returns {BinaryOperator}
+   */
+  static create(lhs, op, rhs) {
+    return new this(lhs, op, rhs);
+  }
 }
 
 module.exports = BinaryOperator;

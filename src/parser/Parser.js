@@ -2,12 +2,33 @@ const Token = require('../lexer/Token');
 const Lexer = require('../lexer');
 const AST = require('../ast');
 
+/**
+ * Parser implementation for a language.
+ * Converts stream of tokens into AST.
+ *
+ * @since 1.0.0
+ */
 class Parser {
+  /**
+   * Creates new parser instance.
+   *
+   * @param {String} input Source code of a program
+   * @example
+   * const parser = new Parser('2 + 5');
+   */
   constructor(input) {
     this.scanner = new Lexer(input);
     this.currentToken = this.scanner.getNextToken();
   }
 
+  /**
+   * Consumes one specified token type.
+   * In case, token type is not equal to the current one, it throws an error.
+   * That's because if you're eating a token that not equals, it means broken syntax structure.
+   *
+   * @param {String} tokenType Token type from {@link Token} dictionary
+   * @returns {Parser}
+   */
   eat(tokenType) {
     if (this.currentToken.is(tokenType)) {
       this.currentToken = this.scanner.getNextToken();
@@ -18,6 +39,11 @@ class Parser {
     return this;
   }
 
+  /**
+   * Basic expressions parsing.
+   *
+   * @returns {Node}
+   */
   factor() {
     const token = this.currentToken;
 
@@ -33,8 +59,15 @@ class Parser {
 
       return node;
     }
+
+    Parser.error(`Unexpected token in "factor" production: ${token}`);
   }
 
+  /**
+   * Terminals expressions parsing.
+   *
+   * @returns {Node}
+   */
   term() {
     let node = this.factor();
 
@@ -53,6 +86,11 @@ class Parser {
     return node;
   }
 
+  /**
+   * Expressions parsing.
+   *
+   * @returns {Node}
+   */
   expr() {
     let node = this.term();
 
@@ -71,10 +109,21 @@ class Parser {
     return node;
   }
 
+  /**
+   * Parses an input stream of tokens and returns AST tree as an object.
+   *
+   * @returns {Node}
+   */
   parse() {
     return this.expr();
   }
 
+  /**
+   * Static helper for notifying about an error, during syntax analysis.
+   *
+   * @static
+   * @param {String} msg
+   */
   static error(msg) {
     throw new Error(`An error during syntax analysis:\n${msg}`);
   }

@@ -25,6 +25,16 @@ class Number extends Node {
   getValue() {
     return parseInt(this.value);
   }
+
+  /**
+   * Static helper for creating this node.
+   *
+   * @param {Token} token
+   * @returns {Number}
+   */
+  static create(token) {
+    return new this(token);
+  }
 }
 
 module.exports = Number;

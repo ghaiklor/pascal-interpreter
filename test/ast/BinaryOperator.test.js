@@ -38,4 +38,13 @@ describe('AST::BinaryOperator', () => {
     assert.instanceOf(node.getRHS(), Number);
     assert.equal(node.getRHS().getValue(), 500);
   });
+
+  it('Should properly create instance via static helper', () => {
+    const node = BinaryOperator.create(LHS, OP, RHS);
+
+    assert.instanceOf(node, BinaryOperator);
+    assert.instanceOf(node.lhs, Number);
+    assert.instanceOf(node.token, Token);
+    assert.instanceOf(node.rhs, Number);
+  });
 });

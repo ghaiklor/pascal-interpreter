@@ -29,11 +29,11 @@ class Node {
    * Static helper for creating a new Node instance.
    *
    * @static
-   * @param {*} args
+   * @param {Token} token
    * @returns {Node}
    */
-  static create(...args) {
-    return new this(...args);
+  static create(token) {
+    return new this(token);
   }
 }
 
