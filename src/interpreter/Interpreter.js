@@ -17,8 +17,19 @@ class Interpreter {
 
   factor() {
     const token = this.currentToken;
-    this.eat(Token.INTEGER);
-    return token.getValue();
+
+    if (token.is(Token.INTEGER)) {
+      this.eat(Token.INTEGER);
+      return token.getValue();
+    } else if (token.is(Token.LEFT_PARENTHESIS)) {
+      this.eat(Token.LEFT_PARENTHESIS);
+
+      const result = this.expr();
+
+      this.eat(Token.RIGHT_PARENTHESIS);
+
+      return result;
+    }
   }
 
   term() {

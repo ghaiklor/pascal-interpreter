@@ -21,4 +21,8 @@ describe('Entry::Interpreter', () => {
   it('Should properly calculate complex mathematical expression', () => {
     assert.equal(interpret('5 * 10 / 25 - 1 + 5'), 6);
   });
+
+  it('Should properly calculate expressions with parenthesis', () => {
+    assert.equal(interpret('5 * (15 + 5) / (20 - 10)'), 10);
+  });
 });
