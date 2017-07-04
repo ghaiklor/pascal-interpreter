@@ -14,6 +14,8 @@ class Parser {
     } else {
       Parser.error(`Unexpected token type: ${tokenType}`);
     }
+
+    return this;
   }
 
   factor() {
