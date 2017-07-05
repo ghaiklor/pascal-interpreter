@@ -13,6 +13,14 @@ class Interpreter {
     return visitor.call(this, node);
   }
 
+  onUnaryOperator(node) {
+    if (node.getOperator().is(Token.PLUS)) {
+      return +this.visit(node.getOperand());
+    } else if (node.getOperator().is(Token.MINUS)) {
+      return -this.visit(node.getOperand());
+    }
+  }
+
   onBinaryOperator(node) {
     if (node.getOperator().is(Token.PLUS)) {
       return this.visit(node.getLHS()) + this.visit(node.getRHS());

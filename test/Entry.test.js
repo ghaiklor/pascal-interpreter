@@ -25,4 +25,10 @@ describe('Entry::Parser', () => {
   it('Should properly calculate expressions with parenthesis', () => {
     assert.equal(interpret('5 * (15 + 5) / (20 - 10)'), 10);
   });
+
+  it('Should properly calculate expressions with unary operators', () => {
+    assert.equal(interpret('-3'), -3);
+    assert.equal(interpret('5 - -2'), 7);
+    assert.equal(interpret('-5 + -2'), -7);
+  });
 });

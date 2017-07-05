@@ -47,7 +47,13 @@ class Parser {
   factor() {
     const token = this.currentToken;
 
-    if (token.is(Token.INTEGER)) {
+    if (token.is(Token.PLUS)) {
+      this.eat(Token.PLUS);
+      return AST.UnaryOperator.create(token, this.factor());
+    } else if (token.is(Token.MINUS)) {
+      this.eat(Token.MINUS);
+      return AST.UnaryOperator.create(token, this.factor());
+    } else if (token.is(Token.INTEGER)) {
       this.eat(Token.INTEGER);
       return new AST.Number(token);
     } else if (token.is(Token.LEFT_PARENTHESIS)) {
