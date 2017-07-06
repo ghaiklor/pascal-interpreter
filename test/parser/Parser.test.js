@@ -69,7 +69,7 @@ describe('Parser', () => {
   });
 
   it('Should properly throw an error if provide parser with unexpected chars', () => {
-    assert.throws(() => new Parser('~~'), Error, 'An error raised during lexical analysis:\nUnexpected character: ~');
+    assert.throws(() => new Parser('~~'), Error, '[Lexer]\nUnexpected character: ~');
   });
 
   it('Should properly throw an error if provide parser with wrong syntax structure', () => {

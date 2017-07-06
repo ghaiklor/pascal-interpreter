@@ -6,6 +6,32 @@
 
 _A simple interpreter for a large subset of Pascal language with a source-level debugger written for educational purposes_
 
-# License
+## Roadmap
+
+### Lexer
+
+- Dictionary of tokens **[DONE]**
+- Structure with accessors which defines token **[DONE]**
+- Casting tokens into strings when printing **[DONE]**
+- Helper for checking token types via *is()* **[DONE]**
+- Lexical analyzer which returns next token each time you call *getNextToken()* **[DONE]**
+- Skip whitespaces at all **[DONE]**
+- Read digits as one token **[DONE]**
+
+### Parser
+
+### AST
+
+### Interpreter
+
+### Compiler
+
+**TBD**
+
+### Debugger
+
+**TBD**
+
+## License
 
 [MIT](./LICENSE)

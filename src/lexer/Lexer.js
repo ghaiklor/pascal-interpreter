@@ -9,8 +9,12 @@ const Token = require('./Token');
 class Lexer {
   /**
    * Creates a new instance of a lexer.
+   * When instance created, you need to call {@link Lexer#getNextToken} for get a token.
+   * Each time you call {@link Lexer#getNextToken} it returns next token from specified input.
    *
    * @param {String} input Source code of a program
+   * @example
+   * const lexer = new Lexer('2 + 5');
    */
   constructor(input) {
     this.input = input;
@@ -19,10 +23,22 @@ class Lexer {
   }
 
   /**
-   * Move pointer by one.
-   * Increments a position value by one and assigns new char to currentChar.
+   * Lexer has a pointer that specifies where we are located right now in input.
+   * This method moves this pointer by one, incrementing its value.
+   * Afterwards, it reads a new char at new pointer's location and stores in `currentChar`.
+   * In case, pointer is out-of-range (end of input) it assigns `null` to `currentChar`.
    *
-   * @returns {Lexer}
+   * @returns {Lexer} Returns current instance of the lexer
+   * @example
+   * const lexer = new Lexer('2 + 5'); // position = 0, currentChar = '2'
+   *
+   * lexer
+   *  .advance() // position = 1, currentChar = ' '
+   *  .advance() // position = 2, currentChar = '+'
+   *  .advance() // position = 3, currentChar = ' '
+   *  .advance() // position = 4, currentChar = '5'
+   *  .advance() // position = 5, currentChar = null
+   *  .advance() // position = 6, currentChar = null
    */
   advance() {
     this.position += 1;
@@ -38,8 +54,10 @@ class Lexer {
 
   /**
    * Skips whitespaces in a source code.
+   * While `currentChar` is a whitespace do {@link Lexer#advance}.
+   * That way, we literally skips any char that doesn't make sense to us.
    *
-   * @returns {Lexer}
+   * @returns {Lexer} Returns current instance of the lexer
    */
   skipWhitespace() {
     while (this.currentChar && /\s/.test(this.currentChar)) {
@@ -51,6 +69,8 @@ class Lexer {
 
   /**
    * Parses an integer from a source code.
+   * While `currentChar` is a digit [0-9], add a char into the string stack.
+   * Afterwards, when `currentChar` is not a digit anymore, parses an integer from the stack.
    *
    * @returns {Number}
    */
@@ -67,8 +87,19 @@ class Lexer {
 
   /**
    * Returns a next token in a source program.
+   * Each time it sees a match from the source program, it wraps info into a {@link Token}.
+   * It means, that it doesn't return all the tokens at once.
+   * You need to call this method each time, you need to get next token from the input program.
    *
    * @returns {Token}
+   * @example
+   * const lexer = new Lexer('2 + 5');
+   *
+   * lexer.getNextToken(); // Token(INTEGER, 2)
+   * lexer.getNextToken(); // Token(PLUS, +)
+   * lexer.getNextToken(); // Token(INTEGER, 5)
+   * lexer.getNextToken(); // Token(EOF, null)
+   * lexer.getNextToken(); // Token(EOF, null)
    */
   getNextToken() {
     while (this.currentChar) {
@@ -118,13 +149,13 @@ class Lexer {
   }
 
   /**
-   * Throws an error in a scanner context.
+   * Throws an error in a lexer context.
    *
    * @static
    * @param {String} msg An error message
    */
   static error(msg) {
-    throw new Error(`An error raised during lexical analysis:\n${msg}`);
+    throw new Error(`[Lexer]\n${msg}`);
   }
 }
 
