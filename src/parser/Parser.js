@@ -6,41 +6,53 @@ const AST = require('../ast');
  * Parser implementation for a language.
  * Converts stream of tokens into AST.
  *
+ * @class
  * @since 1.0.0
  */
 class Parser {
   /**
    * Creates new parser instance.
+   * It accepts as an input source code of a program.
+   * In result, it will parse it and return an AST of specified program.
+   * As a dependency, it uses the lexer which returns stream of tokens.
    *
    * @param {String} input Source code of a program
    * @example
    * const parser = new Parser('2 + 5');
    */
   constructor(input) {
-    this.scanner = new Lexer(input);
-    this.currentToken = this.scanner.getNextToken();
+    this.lexer = new Lexer(input);
+    this.currentToken = this.lexer.getNextToken();
   }
 
   /**
    * Consumes one specified token type.
    * In case, token type is not equal to the current one, it throws an error.
-   * That's because if you're eating a token that not equals, it means broken syntax structure.
+   * When you are consuming a token you are not expecting, it means broken syntax structure.
    *
    * @param {String} tokenType Token type from {@link Token} dictionary
-   * @returns {Parser}
+   * @returns {Parser} Returns current parser instance
+   * @example
+   * const parser = new Parser('2 + 5'); // currentToken = INTEGER
+   *
+   * parser
+   *  .eat(Token.INTEGER) // currentToken = PLUS
+   *  .eat(Token.PLUS) // currentToken = INTEGER
+   *  .eat(Token.PLUS) // throws an error, because currentToken = INTEGER
    */
   eat(tokenType) {
     if (this.currentToken.is(tokenType)) {
-      this.currentToken = this.scanner.getNextToken();
+      this.currentToken = this.lexer.getNextToken();
     } else {
-      Parser.error(`Unexpected token type: ${tokenType}`);
+      Parser.error(`You provided unexpected token type "${tokenType}" while current token is ${this.currentToken}`);
     }
 
     return this;
   }
 
   /**
-   * Basic expressions parsing.
+   * Production for parsing basic units of a language.
+   * It consists of unary operators, integers and expressions.
    *
    * @returns {Node}
    */
@@ -55,14 +67,11 @@ class Parser {
       return AST.UnaryOperator.create(token, this.factor());
     } else if (token.is(Token.INTEGER)) {
       this.eat(Token.INTEGER);
-      return new AST.Number(token);
+      return AST.Number.create(token);
     } else if (token.is(Token.LEFT_PARENTHESIS)) {
       this.eat(Token.LEFT_PARENTHESIS);
-
       const node = this.expr();
-
       this.eat(Token.RIGHT_PARENTHESIS);
-
       return node;
     }
 
@@ -70,14 +79,14 @@ class Parser {
   }
 
   /**
-   * Terminals expressions parsing.
+   * Production for parsing terminals.
    *
    * @returns {Node}
    */
   term() {
     let node = this.factor();
 
-    while ([Token.ASTERISK, Token.SLASH].indexOf(this.currentToken.getType()) !== -1) {
+    while ([Token.ASTERISK, Token.SLASH].some(type => this.currentToken.is(type))) {
       const token = this.currentToken;
 
       if (token.is(Token.ASTERISK)) {
@@ -86,21 +95,21 @@ class Parser {
         this.eat(Token.SLASH);
       }
 
-      node = new AST.BinaryOperator(node, token, this.factor());
+      node = AST.BinaryOperator.create(node, token, this.factor());
     }
 
     return node;
   }
 
   /**
-   * Expressions parsing.
+   * Production for parsing expressions.
    *
    * @returns {Node}
    */
   expr() {
     let node = this.term();
 
-    while ([Token.PLUS, Token.MINUS].indexOf(this.currentToken.getType()) !== -1) {
+    while ([Token.PLUS, Token.MINUS].some(type => this.currentToken.is(type))) {
       const token = this.currentToken;
 
       if (token.is(Token.PLUS)) {
@@ -109,29 +118,33 @@ class Parser {
         this.eat(Token.MINUS);
       }
 
-      node = new AST.BinaryOperator(node, token, this.term());
+      node = AST.BinaryOperator.create(node, token, this.term());
     }
 
     return node;
   }
 
   /**
-   * Parses an input stream of tokens and returns AST tree as an object.
+   * Parses an input source program and returns an AST.
    *
    * @returns {Node}
+   * @example
+   * const parser = new Parser('2 + 5');
+   *
+   * parser.parse(); // return an object that represents an AST of source program
    */
   parse() {
     return this.expr();
   }
 
   /**
-   * Static helper for notifying about an error, during syntax analysis.
+   * Static helper for notifying about an error, during parsing.
    *
    * @static
-   * @param {String} msg
+   * @param {String} msg Error message
    */
   static error(msg) {
-    throw new Error(`An error during syntax analysis:\n${msg}`);
+    throw new Error(`[Parser]\n${msg}`);
   }
 }
 

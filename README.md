@@ -20,6 +20,12 @@ _A simple interpreter for a large subset of Pascal language with a source-level 
 
 ### Parser
 
+- Consuming (eating) tokens from a lexer **[DONE]**
+- Productions for mathematical expressions **[DONE]**
+- Associativity and precedence **[DONE]**
+- Support for parenthesis **[DONE]**
+- Building an AST nodes **[DONE]**
+
 ### AST
 
 ### Interpreter
