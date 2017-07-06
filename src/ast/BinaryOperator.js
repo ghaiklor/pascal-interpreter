@@ -36,7 +36,7 @@ class BinaryOperator extends Node {
    * @returns {Token}
    */
   getOperator() {
-    return this.token;
+    return this.getToken();
   }
 
   /**
