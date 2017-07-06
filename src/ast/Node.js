@@ -1,11 +1,13 @@
 /**
- * Basic Node for an AST.
+ * Basic Node for AST.
  *
+ * @class
  * @since 1.0.0
  */
 class Node {
   /**
    * Creates an instance of Node.
+   * Each node should have a {@link Token} instance to identify where from this node came.
    *
    * @param {Token} token {@link Token} instance
    * @example

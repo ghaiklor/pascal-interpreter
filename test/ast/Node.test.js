@@ -9,6 +9,7 @@ describe('AST::Node', () => {
     const node = new Node(TOKEN);
 
     assert.instanceOf(node, Node);
+    assert.instanceOf(node.token, Token);
   });
 
   it('Should properly return a token from node', () => {
@@ -17,6 +18,7 @@ describe('AST::Node', () => {
     assert.instanceOf(node.getToken(), Token);
     assert.ok(node.getToken().is(Token.INTEGER));
     assert.equal(node.getToken().getType(), Token.INTEGER);
+    assert.equal(node.getToken().getType(), 'INTEGER');
     assert.equal(node.getToken().getValue(), 200);
   });
 
@@ -24,5 +26,6 @@ describe('AST::Node', () => {
     const node = Node.create(TOKEN);
 
     assert.instanceOf(node, Node);
+    assert.instanceOf(node.token, Token);
   });
 });

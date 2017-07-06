@@ -28,6 +28,11 @@ _A simple interpreter for a large subset of Pascal language with a source-level 
 
 ### AST
 
+- Basic AST Node class **[DONE]**
+- Number Node **[DONE]**
+- BinaryOperator Node **[DONE]**
+- UnaryOperator Node **[DONE]**
+
 ### Interpreter
 
 ### Compiler

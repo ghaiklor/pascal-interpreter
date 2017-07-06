@@ -3,6 +3,7 @@ const Node = require('./Node');
 /**
  * Class that represents a binary operation in AST.
  *
+ * @class
  * @since 1.0.0
  */
 class BinaryOperator extends Node {
@@ -10,11 +11,11 @@ class BinaryOperator extends Node {
    * Creates an instance of binary operation in AST.
    *
    * @param {Node} lhs AST Node (left operand)
-   * @param {Token} op Operator represented as a {@link Token}
+   * @param {Token} operator Operator represented as a {@link Token}
    * @param {Node} rhs AST Node (right operand)
    */
-  constructor(lhs, op, rhs) {
-    super(op);
+  constructor(lhs, operator, rhs) {
+    super(operator);
 
     this.lhs = lhs;
     this.rhs = rhs;
@@ -50,13 +51,13 @@ class BinaryOperator extends Node {
   /**
    * Static helper for creating new binary nodes.
    *
-   * @param {Node} lhs
-   * @param {Token} op
-   * @param {Node} rhs
+   * @param {Node} lhs AST Node (left operand)
+   * @param {Token} operator Operator represented as a {@link Token}
+   * @param {Node} rhs AST Node (right operand)
    * @returns {BinaryOperator}
    */
-  static create(lhs, op, rhs) {
-    return new this(lhs, op, rhs);
+  static create(lhs, operator, rhs) {
+    return new this(lhs, operator, rhs);
   }
 }
 

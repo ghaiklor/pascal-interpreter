@@ -9,6 +9,9 @@ describe('AST::Number', () => {
     const node = Number.create(TOKEN);
 
     assert.instanceOf(node, Number);
+    assert.instanceOf(node.token, Token);
+    assert.ok(node.token.is(Token.INTEGER));
+    assert.equal(node.value, 500);
   });
 
   it('Should properly return a value from Number node', () => {

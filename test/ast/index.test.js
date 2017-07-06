@@ -6,5 +6,6 @@ describe('AST::EntryPoint', () => {
     assert.isFunction(AST.BinaryOperator);
     assert.isFunction(AST.Node);
     assert.isFunction(AST.Number);
+    assert.isFunction(AST.UnaryOperator);
   });
 });
