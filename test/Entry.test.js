@@ -1,7 +1,7 @@
 const {assert} = require('chai');
 const interpret = require('../src');
 
-describe('Entry::Parser', () => {
+describe('Module::Entry', () => {
   it('Should properly calculate plus operation', () => {
     assert.equal(interpret('2 + 5 + 3'), 10);
   });
@@ -30,5 +30,6 @@ describe('Entry::Parser', () => {
     assert.equal(interpret('-3'), -3);
     assert.equal(interpret('5 - -2'), 7);
     assert.equal(interpret('-5 + -2'), -7);
+    assert.equal(interpret('-5 * (15 + 5) / (20 - 10)'), -10);
   });
 });
