@@ -35,6 +35,11 @@ _A simple interpreter for a large subset of Pascal language with a source-level 
 
 ### Interpreter
 
+- *visit()* that calls visitors for each AST node, based on its type **[DONE]**
+- Visitor for Number Node **[DONE]**
+- Visitor for UnaryOperator Node **[DONE]**
+- Visitor for BinaryOperator Node **[DONE]**
+
 ### Compiler
 
 **TBD**
