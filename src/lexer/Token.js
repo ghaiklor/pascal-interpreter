@@ -174,6 +174,69 @@ class Token {
   static get EOF() {
     return 'EOF';
   }
+
+  /**
+   * Returns a Token type for a BEGIN keyword.
+   * This token marks a beginning of a compound statement.
+   *
+   * @static
+   * @returns {String}
+   */
+  static get BEGIN() {
+    return 'BEGIN';
+  }
+
+  /**
+   * Returns a Token type for an END keyword.
+   * This token marks the end of a compound statement.
+   *
+   * @static
+   * @returns {String}
+   */
+  static get END() {
+    return 'END';
+  }
+
+  /**
+   * Returns a Token type for a dot symbol (.).
+   *
+   * @static
+   * @returns {String}
+   */
+  static get DOT() {
+    return 'DOT';
+  }
+
+  /**
+   * Returns a Token type for an ASSIGN sequence of chars (:=).
+   *
+   * @static
+   * @returns {String}
+   */
+  static get ASSIGN() {
+    return 'ASSIGN';
+  }
+
+  /**
+   * Returns a Token type for a semicolon symbol (;).
+   *
+   * @static
+   * @returns {String}
+   */
+  static get SEMICOLON() {
+    return 'SEMICOLON';
+  }
+
+  /**
+   * Returns a Token type for identifiers in a program.
+   * Valid identifier starts with an alphabetical character.
+   *
+   * @static
+   * @returns {String}
+   */
+  static get IDENTIFIER() {
+    return 'IDENTIFIER';
+  }
 }
 
 module.exports = Token;

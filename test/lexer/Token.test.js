@@ -76,5 +76,11 @@ describe('Lexer::Token', () => {
     assert.equal(Token.LEFT_PARENTHESIS, 'LEFT_PARENTHESIS');
     assert.equal(Token.RIGHT_PARENTHESIS, 'RIGHT_PARENTHESIS');
     assert.equal(Token.EOF, 'EOF');
+    assert.equal(Token.BEGIN, 'BEGIN');
+    assert.equal(Token.END, 'END');
+    assert.equal(Token.DOT, 'DOT');
+    assert.equal(Token.ASSIGN, 'ASSIGN');
+    assert.equal(Token.SEMICOLON, 'SEMICOLON');
+    assert.equal(Token.IDENTIFIER, 'IDENTIFIER');
   });
 });
