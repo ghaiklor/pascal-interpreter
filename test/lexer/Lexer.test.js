@@ -25,6 +25,35 @@ describe('Lexer', () => {
     assert.equal(lexer.currentChar, '+');
   });
 
+  it('Should properly peek a character without modifying a pointer', () => {
+    const lexer = new Lexer('2 + 3');
+
+    assert.instanceOf(lexer, Lexer);
+    assert.equal(lexer.input, '2 + 3');
+    assert.equal(lexer.position, 0);
+    assert.equal(lexer.currentChar, '2');
+    assert.instanceOf(lexer.advance(), Lexer);
+    assert.equal(lexer.input, '2 + 3');
+    assert.equal(lexer.position, 1);
+    assert.equal(lexer.currentChar, ' ');
+    assert.equal(lexer.peek(), '+');
+    assert.equal(lexer.input, '2 + 3');
+    assert.equal(lexer.position, 1);
+    assert.equal(lexer.currentChar, ' ');
+    assert.instanceOf(lexer.advance(), Lexer);
+    assert.equal(lexer.input, '2 + 3');
+    assert.equal(lexer.position, 2);
+    assert.equal(lexer.currentChar, '+');
+    assert.instanceOf(lexer.advance(), Lexer);
+    assert.equal(lexer.input, '2 + 3');
+    assert.equal(lexer.position, 3);
+    assert.equal(lexer.currentChar, ' ');
+    assert.equal(lexer.peek(), '3');
+    assert.equal(lexer.input, '2 + 3');
+    assert.equal(lexer.position, 3);
+    assert.equal(lexer.currentChar, ' ');
+  });
+
   it('Should properly skip whitespaces in an input', () => {
     const lexer = new Lexer('2    + 3');
 

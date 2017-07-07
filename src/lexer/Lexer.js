@@ -53,6 +53,29 @@ class Lexer {
   }
 
   /**
+   * Peeks a following character from the input without modifying the pointer.
+   * The difference here between {@link Lexer#advance} is that this method is pure.
+   * It helps differentiate between different tokens that start with the same character.
+   * I.e. ':' and ':=' are different tokens, but we can't say that for sure until we see the next char.
+   *
+   * @returns {String}
+   * @example
+   * const lexer = new Lexer('2 + 5'); // pointer = 0, currentChar = '2'
+   *
+   * lexer
+   *  .peek() // pointer = 0, currentChar = '2', returns ' '
+   *  .advance() // pointer = 1, currentChar = ' '
+   *  .peek() // pointer = 1, currentChar = ' ', returns '+'
+   */
+  peek() {
+    const position = this.position + 1;
+
+    if (position > this.input.length - 1) return null;
+
+    return this.input[position];
+  }
+
+  /**
    * Skips whitespaces in a source code.
    * While `currentChar` is a whitespace do {@link Lexer#advance}.
    * That way, we literally skips any char that doesn't make sense to us.
