@@ -17,6 +17,7 @@ _A simple interpreter for a large subset of Pascal language with a source-level 
 - Lexical analyzer which returns next token each time you call *getNextToken()* **[DONE]**
 - Skip whitespaces at all **[DONE]**
 - Read digits as one token **[DONE]**
+- Read alphanumeric as IDENTIFIER tokens **[DONE]**
 
 ### Parser
 
