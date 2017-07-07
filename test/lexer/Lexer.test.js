@@ -1,4 +1,5 @@
 const {assert} = require('chai');
+const Token = require('../../src/lexer/Token');
 const Lexer = require('../../src/lexer');
 
 describe('Lexer', () => {
@@ -103,6 +104,46 @@ describe('Lexer', () => {
     assert.equal(lexer.integer(), 3);
   });
 
+  it('Should properly parse an identifier from an input', () => {
+    const lexer = new Lexer('BEGIN x y z END');
+
+    assert.instanceOf(lexer, Lexer);
+
+    const begin = lexer.identifier();
+    assert.instanceOf(begin, Token);
+    assert.ok(begin.is(Token.BEGIN));
+    assert.equal(begin.getType(), 'BEGIN');
+    assert.equal(begin.getValue(), 'BEGIN');
+    assert.instanceOf(lexer.advance(), Lexer);
+
+    const x = lexer.identifier();
+    assert.instanceOf(x, Token);
+    assert.ok(x.is(Token.IDENTIFIER));
+    assert.equal(x.getType(), 'IDENTIFIER');
+    assert.equal(x.getValue(), 'x');
+    assert.instanceOf(lexer.advance(), Lexer);
+
+    const y = lexer.identifier();
+    assert.instanceOf(y, Token);
+    assert.ok(y.is(Token.IDENTIFIER));
+    assert.equal(y.getType(), 'IDENTIFIER');
+    assert.equal(y.getValue(), 'y');
+    assert.instanceOf(lexer.advance(), Lexer);
+
+    const z = lexer.identifier();
+    assert.instanceOf(z, Token);
+    assert.ok(z.is(Token.IDENTIFIER));
+    assert.equal(z.getType(), 'IDENTIFIER');
+    assert.equal(z.getValue(), 'z');
+    assert.instanceOf(lexer.advance(), Lexer);
+
+    const end = lexer.identifier();
+    assert.instanceOf(end, Token);
+    assert.ok(end.is(Token.END));
+    assert.equal(end.getType(), 'END');
+    assert.equal(end.getValue(), 'END');
+  });
+
   it('Should properly return a stream of tokens for +, -, *, /', () => {
     const lexer = new Lexer('+ - * /');
 
@@ -150,5 +191,10 @@ describe('Lexer', () => {
     assert.equal(lexer.getNextToken(), 'Token(INTEGER, 2)');
     assert.equal(lexer.getNextToken(), 'Token(PLUS, +)');
     assert.throws(() => lexer.getNextToken(), `[Lexer]\nUnexpected character: ~`);
+  });
+
+  it('Should properly return a dictionary of reserved words in a language', () => {
+    assert.instanceOf(Lexer.RESERVED_WORDS.BEGIN, Token);
+    assert.instanceOf(Lexer.RESERVED_WORDS.END, Token);
   });
 });

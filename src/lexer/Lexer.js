@@ -109,6 +109,30 @@ class Lexer {
   }
 
   /**
+   * Parses a sequence of alphanumeric characters and returns a token.
+   * In case, the sequence is reserved word, it returns a predefined token for this word.
+   * Otherwise, it returns an IDENTIFIER token.
+   *
+   * @returns {Token}
+   * @example
+   * const lexer = new Lexer('BEGIN x END');
+   *
+   * lexer.identifier(); // Token(BEGIN, BEGIN)
+   * lexer.identifier(); // Token(IDENTIFIER, x)
+   * lexer.identifier(); // Token(END, END)
+   */
+  identifier() {
+    let identifier = '';
+
+    while (this.currentChar && /[a-zA-Z0-9]/.test(this.currentChar)) {
+      identifier += this.currentChar;
+      this.advance();
+    }
+
+    return Lexer.RESERVED_WORDS[identifier] || Token.create(Token.IDENTIFIER, identifier);
+  }
+
+  /**
    * Returns a next token in a source program.
    * Each time it sees a match from the source program, it wraps info into a {@link Token}.
    * It means, that it doesn't return all the tokens at once.
@@ -179,6 +203,21 @@ class Lexer {
    */
   static error(msg) {
     throw new Error(`[Lexer]\n${msg}`);
+  }
+
+  /**
+   * Returns a dictionary of reserved words in this language.
+   * In case, identifier exists in this dictionary, we need to return a token for this identifier.
+   * Otherwise, we need to create a token IDENTIFIER and provide it with a name of identifier.
+   *
+   * @static
+   * @returns {Object}
+   */
+  static get RESERVED_WORDS() {
+    return {
+      BEGIN: Token.create(Token.BEGIN, 'BEGIN'),
+      END: Token.create(Token.END, 'END')
+    }
   }
 }
 
