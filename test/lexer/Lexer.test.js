@@ -53,6 +53,11 @@ describe('Lexer', () => {
     assert.equal(lexer.input, '2 + 3');
     assert.equal(lexer.position, 3);
     assert.equal(lexer.currentChar, ' ');
+    assert.instanceOf(lexer.advance(), Lexer);
+    assert.equal(lexer.input, '2 + 3');
+    assert.equal(lexer.position, 4);
+    assert.equal(lexer.currentChar, '3');
+    assert.isNull(lexer.peek());
   });
 
   it('Should properly skip whitespaces in an input', () => {
@@ -176,6 +181,19 @@ describe('Lexer', () => {
     assert.equal(lexer.getNextToken(), 'Token(ASTERISK, *)');
     assert.equal(lexer.getNextToken(), 'Token(INTEGER, 3)');
     assert.equal(lexer.getNextToken(), 'Token(EOF, null)');
+    assert.equal(lexer.getNextToken(), 'Token(EOF, null)');
+  });
+
+  it('Should properly return a stream of tokens for a Pascal program definition', () => {
+    const lexer = new Lexer('BEGIN a := 2; END.');
+
+    assert.equal(lexer.getNextToken(), 'Token(BEGIN, BEGIN)');
+    assert.equal(lexer.getNextToken(), 'Token(IDENTIFIER, a)');
+    assert.equal(lexer.getNextToken(), 'Token(ASSIGN, :=)');
+    assert.equal(lexer.getNextToken(), 'Token(INTEGER, 2)');
+    assert.equal(lexer.getNextToken(), 'Token(SEMICOLON, ;)');
+    assert.equal(lexer.getNextToken(), 'Token(END, END)');
+    assert.equal(lexer.getNextToken(), 'Token(DOT, .)');
     assert.equal(lexer.getNextToken(), 'Token(EOF, null)');
   });
 

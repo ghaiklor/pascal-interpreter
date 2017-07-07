@@ -159,6 +159,25 @@ class Lexer {
         return Token.create(Token.INTEGER, this.integer());
       }
 
+      if (/[a-zA-Z]/.test(this.currentChar)) {
+        return this.identifier();
+      }
+
+      if (this.currentChar === ':' && this.peek() === '=') {
+        this.advance().advance();
+        return Token.create(Token.ASSIGN, ':=');
+      }
+
+      if (this.currentChar === ';') {
+        this.advance();
+        return Token.create(Token.SEMICOLON, ';');
+      }
+
+      if (this.currentChar === '.') {
+        this.advance();
+        return Token.create(Token.DOT, '.');
+      }
+
       if (this.currentChar === '+') {
         this.advance();
         return Token.create(Token.PLUS, '+');
