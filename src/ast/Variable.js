@@ -9,6 +9,7 @@ const Node = require('./Node');
 class Variable extends Node {
   /**
    * Creates new instance of Variable node.
+   * All it has is just a token of the identifier and its name.
    *
    * @param {Token} token Identifier token that represents a variable
    * @param {String} name Name of a variable
@@ -32,8 +33,8 @@ class Variable extends Node {
    * Static helper for creating Variable node.
    *
    * @static
-   * @param {Token} token
-   * @param {String} name
+   * @param {Token} token Identifier token that represents a variable
+   * @param {String} name Name of a variable
    * @returns {Variable}
    */
   static create(token, name) {

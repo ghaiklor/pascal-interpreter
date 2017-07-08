@@ -9,6 +9,7 @@ const Node = require('./Node');
 class BinaryOperator extends Node {
   /**
    * Creates an instance of binary operation in AST.
+   * Binary operation means that it has two operands and one operator.
    *
    * @param {Node} lhs AST Node (left operand)
    * @param {Token} operator Operator represented as a {@link Token}

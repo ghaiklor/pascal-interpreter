@@ -9,6 +9,8 @@ const Node = require('./Node');
 class Number extends Node {
   /**
    * Creates a new instance of Number Node.
+   * That's just a thin wrapper around {@link Token} instance.
+   * It was created just for case, if we will need more complex logic for get its value.
    *
    * @param {Token} token {@link Token} that represents a number
    * @example

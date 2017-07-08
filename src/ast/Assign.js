@@ -9,10 +9,11 @@ const Node = require('./Node');
 class Assign extends Node {
   /**
    * Creates new instance of Assign node.
+   * This node contains three parts: variable, assignment token and an expression.
    *
-   * @param {Variable} variable
-   * @param {Token} token
-   * @param {Node} expression
+   * @param {Variable} variable Variable node
+   * @param {Token} token Assignment token
+   * @param {Node} expression AST node which indicates an expression
    */
   constructor(variable, token, expression) {
     super(token);
@@ -43,10 +44,10 @@ class Assign extends Node {
    * Static helper for creating Assign node.
    *
    * @static
-   * @param {Variable} variable
-   * @param {Token} token
-   * @param {Node} expression
-   * @returns {Assign}
+   * @param {Variable} variable Variable node
+   * @param {Token} token Assignment token
+   * @param {Node} expression AST node which indicates an expression
+   * @returns {Assign} Returns created Assign node
    */
   static create(variable, token, expression) {
     return new this(variable, token, expression);

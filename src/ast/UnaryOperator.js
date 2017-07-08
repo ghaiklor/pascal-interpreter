@@ -9,6 +9,9 @@ const Node = require('./Node');
 class UnaryOperator extends Node {
   /**
    * Creates a new instance of Node for unary operator.
+   * It consists of two parts: operator and operand.
+   * Operator is just a token which represents an operation you need to do.
+   * Operand represents an AST node to which operator should apply.
    *
    * @param {Token} operator Unary operator
    * @param {Node} operand AST Node as an operand
