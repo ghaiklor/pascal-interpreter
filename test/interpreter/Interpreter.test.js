@@ -3,6 +3,7 @@ const Interpreter = require('../../src/interpreter');
 
 describe('Interpreter', () => {
   it('Should properly handle symbol table changes', () => {
+    process.GLOBAL_SCOPE = {};
     const program = `BEGIN x:= -2; y:= -x; z:=(x - y + +8) / 4 * -1 END.`;
     const interpreter = new Interpreter(program);
 
