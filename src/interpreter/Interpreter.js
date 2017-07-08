@@ -48,6 +48,48 @@ class Interpreter {
   }
 
   /**
+   * Visitor for {@link NoOperation} node.
+   *
+   * @param {NoOperation} node
+   * @returns {NoOperation}
+   */
+  onNoOperation(node) {
+    return node;
+  }
+
+  /**
+   * Visitor for {@link Compound} node.
+   *
+   * @param {Compound} node
+   */
+  onCompound(node) {
+    return node.getChildren().forEach(child => this.visit(child));
+  }
+
+  /**
+   * Visitor for {@link Assign} node.
+   *
+   * @param {Assign} node
+   */
+  onAssign(node) {
+    const variableName = node.getVariable().getName();
+
+    process.GLOBAL_SCOPE = process.GLOBAL_SCOPE || {};
+    process.GLOBAL_SCOPE[variableName] = this.visit(node.getExpression());
+  }
+
+  /**
+   * Visitor for {@link Variable} node.
+   *
+   * @param {Variable} node
+   */
+  onVariable(node) {
+    const variableName = node.getName();
+
+    return process.GLOBAL_SCOPE[variableName];
+  }
+
+  /**
    * Visitor for {@link Number} Node.
    *
    * @param {Number} node
