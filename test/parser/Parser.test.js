@@ -23,83 +23,64 @@ describe('Parser', () => {
     assert.throws(() => parser.eat(Token.ASTERISK), Error, '[Parser]\nYou provided unexpected token type "ASTERISK" while current token is Token(INTEGER, 5)');
   });
 
-  it('Should properly parse an expression with +', () => {
-    const parser = new Parser('2 + 5');
+  it('Should properly parse a simple program', () => {
+    const program = `BEGIN x:= 2; y:= x + 5; END.`;
+    const parser = new Parser(program);
     const ast = parser.parse();
 
-    assert.instanceOf(ast, AST.BinaryOperator);
-    assert.equal(ast.getLHS().getValue(), 2);
-    assert.ok(ast.getOperator().is(Token.PLUS));
-    assert.equal(ast.getRHS().getValue(), 5);
+    assert.instanceOf(parser, Parser);
+    assert.instanceOf(ast, AST.Compound);
   });
 
-  it('Should properly parse an expression with -', () => {
-    const parser = new Parser('2 - 5');
+  it('Should properly parse a program with all factors', () => {
+    const program = `BEGIN x:= +2; y:= x + -5; z:= (x + y); END.`;
+    const parser = new Parser(program);
     const ast = parser.parse();
 
-    assert.instanceOf(ast, AST.BinaryOperator);
-    assert.equal(ast.getLHS().getValue(), 2);
-    assert.ok(ast.getOperator().is(Token.MINUS));
-    assert.equal(ast.getRHS().getValue(), 5);
+    assert.instanceOf(parser, Parser);
+    assert.instanceOf(ast, AST.Compound);
   });
 
-  it('Should properly parse an expression with *', () => {
-    const parser = new Parser('2 * 5');
+  it('Should properly parse a program with all terms', () => {
+    const program = `BEGIN x:= +2; y:= x * -5; z:= (x / y); END.`;
+    const parser = new Parser(program);
     const ast = parser.parse();
 
-    assert.instanceOf(ast, AST.BinaryOperator);
-    assert.equal(ast.getLHS().getValue(), 2);
-    assert.ok(ast.getOperator().is(Token.ASTERISK));
-    assert.equal(ast.getRHS().getValue(), 5);
+    assert.instanceOf(parser, Parser);
+    assert.instanceOf(ast, AST.Compound);
   });
 
-  it('Should properly parse an expression with /', () => {
-    const parser = new Parser('2 / 5');
+  it('Should properly parse a program with all expressions', () => {
+    const program = `BEGIN x:= +2; y:= x * -5; z:= (x / y) - 5; END.`;
+    const parser = new Parser(program);
     const ast = parser.parse();
 
-    assert.instanceOf(ast, AST.BinaryOperator);
-    assert.equal(ast.getLHS().getValue(), 2);
-    assert.ok(ast.getOperator().is(Token.SLASH));
-    assert.equal(ast.getRHS().getValue(), 5);
+    assert.instanceOf(parser, Parser);
+    assert.instanceOf(ast, AST.Compound);
   });
 
-  it('Should properly parse an expression with parenthesis', () => {
-    const parser = new Parser('5 * (10 - 8)');
+  it('Should properly parse a program with few compound statements', () => {
+    const program = `BEGIN x:= +2; y:= x * -5; BEGIN z:= (x / y) - 5; END END.`;
+    const parser = new Parser(program);
     const ast = parser.parse();
 
-    assert.instanceOf(ast, AST.BinaryOperator);
-    assert.equal(ast.getLHS().getValue(), 5);
-    assert.ok(ast.getOperator().is(Token.ASTERISK));
-    assert.instanceOf(ast.getRHS(), AST.BinaryOperator);
-    assert.equal(ast.getRHS().getLHS().getValue(), 10);
-    assert.ok(ast.getRHS().getOperator().is(Token.MINUS));
-    assert.equal(ast.getRHS().getRHS().getValue(), 8);
-  });
-
-  it('Should properly parse an expression with unary operator (-)', () => {
-    const parser = new Parser('-5');
-    const ast = parser.parse();
-
-    assert.instanceOf(ast, AST.UnaryOperator);
-    assert.ok(ast.getOperator().is(Token.MINUS));
-    assert.equal(ast.getOperand().getValue(), 5);
-  });
-
-  it('Should properly parse an expression with unary operator (+)', () => {
-    const parser = new Parser('+5');
-    const ast = parser.parse();
-
-    assert.instanceOf(ast, AST.UnaryOperator);
-    assert.ok(ast.getOperator().is(Token.PLUS));
-    assert.equal(ast.getOperand().getValue(), 5);
+    assert.instanceOf(parser, Parser);
+    assert.instanceOf(ast, AST.Compound);
   });
 
   it('Should properly throw an error if provide parser with unexpected chars', () => {
     assert.throws(() => new Parser('~~'), Error, '[Lexer]\nUnexpected character: ~');
   });
 
+  it('Should properly throw an error if identifier is in statement list', () => {
+    const program = `BEGIN x:= y z END.`;
+    const parser = new Parser(program);
+
+    assert.throws(() => parser.parse(), Error, '[Parser]\nUnexpected identifier in "statementList" production: Token(IDENTIFIER, z)');
+  });
+
   it('Should properly throw an error if provide parser with wrong syntax structure', () => {
-    const parser = new Parser('100 + / 5');
+    const parser = new Parser('BEGIN x:= 100 + / 5');
 
     assert.throws(() => parser.parse(), Error, '[Parser]\nUnexpected token in "factor" production: Token(SLASH, /)');
   });

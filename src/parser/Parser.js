@@ -51,8 +51,34 @@ class Parser {
   }
 
   /**
+   * Production for an empty node.
+   *
+   * @returns {NoOperation}
+   */
+  empty() {
+    return AST.NoOperation.create();
+  }
+
+  /**
+   * Production for a variable.
+   * variable: IDENTIFIER
+   *
+   * @returns {Variable}
+   */
+  variable() {
+    const node = AST.Variable.create(this.currentToken, this.currentToken.getValue());
+    this.eat(Token.IDENTIFIER);
+    return node;
+  }
+
+  /**
    * Production for parsing basic units of a language.
    * It consists of unary operators, integers and expressions.
+   * factor: PLUS factor
+   *       | MINUS factor
+   *       | INTEGER
+   *       | LEFT_PARENTHESIS expr RIGHT_PARENTHESIS
+   *       | variable
    *
    * @returns {Node}
    */
@@ -73,6 +99,8 @@ class Parser {
       const node = this.expr();
       this.eat(Token.RIGHT_PARENTHESIS);
       return node;
+    } else if (token.is(Token.IDENTIFIER)) {
+      return this.variable();
     }
 
     Parser.error(`Unexpected token in "factor" production: ${token}`);
@@ -125,6 +153,92 @@ class Parser {
   }
 
   /**
+   * Production for an assignment statement.
+   * assignmentStatement: variable ASSIGN expr
+   *
+   * @returns {Assign}
+   */
+  assignmentStatement() {
+    const variable = this.variable();
+    const token = this.currentToken;
+    this.eat(Token.ASSIGN);
+    const expression = this.expr();
+
+    return AST.Assign.create(variable, token, expression);
+  }
+
+  /**
+   * Production for a compound statements.
+   * compoundStatement: BEGIN statementList END
+   *
+   * @returns {Node}
+   */
+  compoundStatement() {
+    this.eat(Token.BEGIN);
+    const nodes = this.statementList();
+    this.eat(Token.END);
+
+    const root = AST.Compound.create();
+    nodes.forEach(node => root.append(node));
+
+    return root;
+  }
+
+  /**
+   * Production for a statement.
+   * statement: compoundStatement | assignmentStatement | empty
+   *
+   * @returns {Node}
+   */
+  statement() {
+    let node;
+
+    if (this.currentToken.is(Token.BEGIN)) {
+      node = this.compoundStatement();
+    } else if (this.currentToken.is(Token.IDENTIFIER)) {
+      node = this.assignmentStatement();
+    } else {
+      node = this.empty();
+    }
+
+    return node;
+  }
+
+  /**
+   * Production for a statement list.
+   * statementList: statement | statement SEMI statementList
+   *
+   * @returns {Array<Node>}
+   */
+  statementList() {
+    const node = this.statement();
+    const nodes = [node];
+
+    while (this.currentToken.is(Token.SEMICOLON)) {
+      this.eat(Token.SEMICOLON);
+      nodes.push(this.statement());
+    }
+
+    if (this.currentToken.is(Token.IDENTIFIER)) {
+      Parser.error(`Unexpected identifier in "statementList" production: ${this.currentToken}`);
+    }
+
+    return nodes;
+  }
+
+  /**
+   * Production for a program.
+   * program: compoundStatement DOT
+   *
+   * @returns {Node}
+   */
+  program() {
+    const node = this.compoundStatement();
+    this.eat(Token.DOT);
+    return node;
+  }
+
+  /**
    * Parses an input source program and returns an AST.
    *
    * @returns {Node}
@@ -134,7 +248,11 @@ class Parser {
    * parser.parse(); // return an object that represents an AST of source program
    */
   parse() {
-    return this.expr();
+    const node = this.program();
+
+    if (this.currentToken.is(Token.EOF)) return node;
+
+    Parser.error(`Invalid program, I didn't get EOF symbol`);
   }
 
   /**
