@@ -51,7 +51,7 @@ class Parser {
   }
 
   /**
-   * Production for an empty node.
+   * empty:
    *
    * @returns {NoOperation}
    */
@@ -60,7 +60,6 @@ class Parser {
   }
 
   /**
-   * Production for a variable.
    * variable: IDENTIFIER
    *
    * @returns {Variable}
@@ -72,8 +71,6 @@ class Parser {
   }
 
   /**
-   * Production for parsing basic units of a language.
-   * It consists of unary operators, integers and expressions.
    * factor: PLUS factor
    *       | MINUS factor
    *       | INTEGER
@@ -99,15 +96,15 @@ class Parser {
       const node = this.expr();
       this.eat(Token.RIGHT_PARENTHESIS);
       return node;
-    } else if (token.is(Token.IDENTIFIER)) {
-      return this.variable();
     }
 
-    Parser.error(`Unexpected token in "factor" production: ${token}`);
+    return this.variable();
   }
 
   /**
-   * Production for parsing terminals.
+   * term: factor ASTERISK term
+   *     | factor SLASH term
+   *     | factor
    *
    * @returns {Node}
    */
@@ -119,7 +116,7 @@ class Parser {
 
       if (token.is(Token.ASTERISK)) {
         this.eat(Token.ASTERISK);
-      } else if (token.is(Token.SLASH)) {
+      } else {
         this.eat(Token.SLASH);
       }
 
@@ -130,7 +127,9 @@ class Parser {
   }
 
   /**
-   * Production for parsing expressions.
+   * expr: term PLUS expr
+   *     | term MINUS expr
+   *     | term
    *
    * @returns {Node}
    */
@@ -142,7 +141,7 @@ class Parser {
 
       if (token.is(Token.PLUS)) {
         this.eat(Token.PLUS);
-      } else if (token.is(Token.MINUS)) {
+      } else {
         this.eat(Token.MINUS);
       }
 
@@ -153,7 +152,6 @@ class Parser {
   }
 
   /**
-   * Production for an assignment statement.
    * assignmentStatement: variable ASSIGN expr
    *
    * @returns {Assign}
@@ -168,10 +166,9 @@ class Parser {
   }
 
   /**
-   * Production for a compound statements.
    * compoundStatement: BEGIN statementList END
    *
-   * @returns {Node}
+   * @returns {Compound}
    */
   compoundStatement() {
     this.eat(Token.BEGIN);
@@ -185,8 +182,9 @@ class Parser {
   }
 
   /**
-   * Production for a statement.
-   * statement: compoundStatement | assignmentStatement | empty
+   * statement: compoundStatement
+   *          | assignmentStatement
+   *          | empty
    *
    * @returns {Node}
    */
@@ -205,8 +203,8 @@ class Parser {
   }
 
   /**
-   * Production for a statement list.
-   * statementList: statement | statement SEMI statementList
+   * statementList: statement
+   *              | statement SEMICOLON statementList
    *
    * @returns {Array<Node>}
    */
@@ -227,7 +225,6 @@ class Parser {
   }
 
   /**
-   * Production for a program.
    * program: compoundStatement DOT
    *
    * @returns {Node}
@@ -240,19 +237,16 @@ class Parser {
 
   /**
    * Parses an input source program and returns an AST.
+   * It uses all the grammar rules above to parse tokens and build AST from it.
    *
    * @returns {Node}
    * @example
-   * const parser = new Parser('2 + 5');
+   * const parser = new Parser('BEGIN END.');
    *
    * parser.parse(); // return an object that represents an AST of source program
    */
   parse() {
-    const node = this.program();
-
-    if (this.currentToken.is(Token.EOF)) return node;
-
-    Parser.error(`Invalid program, I didn't get EOF symbol`);
+    return this.program();
   }
 
   /**
