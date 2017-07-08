@@ -18,6 +18,7 @@ _A simple interpreter for a large subset of Pascal language with a source-level 
 - Skip whitespaces at all **[DONE]**
 - Read digits as one token **[DONE]**
 - Read alphanumeric as IDENTIFIER tokens **[DONE]**
+- Add a dictionary of reserved words in a language with appropriate tokens in it **[DONE]**
 
 ### Parser
 
@@ -25,6 +26,8 @@ _A simple interpreter for a large subset of Pascal language with a source-level 
 - Productions for mathematical expressions **[DONE]**
 - Associativity and precedence **[DONE]**
 - Support for parenthesis **[DONE]**
+- Support for variable assignments **[DONE]**
+- Support for compounds of statements **[DONE]**
 - Building an AST nodes **[DONE]**
 
 ### AST
@@ -33,6 +36,10 @@ _A simple interpreter for a large subset of Pascal language with a source-level 
 - Number Node **[DONE]**
 - BinaryOperator Node **[DONE]**
 - UnaryOperator Node **[DONE]**
+- Assign Node **[DONE]**
+- Compound Node **[DONE]**
+- NoOperation Node **[DONE]**
+- Variable Node **[DONE]**
 
 ### Interpreter
 
@@ -40,6 +47,10 @@ _A simple interpreter for a large subset of Pascal language with a source-level 
 - Visitor for Number Node **[DONE]**
 - Visitor for UnaryOperator Node **[DONE]**
 - Visitor for BinaryOperator Node **[DONE]**
+- Visitor for NoOperation Node **[DONE]**
+- Visitor for Compound Node **[DONE]**
+- Visitor for Assign Node **[DONE]**
+- Visitor for Variable Node **[DONE]**
 
 ### Compiler
 
