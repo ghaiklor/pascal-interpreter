@@ -212,6 +212,11 @@ describe('Lexer', () => {
   });
 
   it('Should properly return a dictionary of reserved words in a language', () => {
+    assert.instanceOf(Lexer.RESERVED_WORDS.PROGRAM, Token);
+    assert.instanceOf(Lexer.RESERVED_WORDS.VAR, Token);
+    assert.instanceOf(Lexer.RESERVED_WORDS.DIV, Token);
+    assert.instanceOf(Lexer.RESERVED_WORDS.INTEGER, Token);
+    assert.instanceOf(Lexer.RESERVED_WORDS.REAL, Token);
     assert.instanceOf(Lexer.RESERVED_WORDS.BEGIN, Token);
     assert.instanceOf(Lexer.RESERVED_WORDS.END, Token);
   });

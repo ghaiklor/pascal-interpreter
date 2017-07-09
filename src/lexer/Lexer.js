@@ -234,6 +234,11 @@ class Lexer {
    */
   static get RESERVED_WORDS() {
     return {
+      PROGRAM: Token.create(Token.PROGRAM, 'PROGRAM'),
+      VAR: Token.create(Token.VAR, 'VAR'),
+      DIV: Token.create(Token.INTEGER_DIV, 'DIV'),
+      INTEGER: Token.create(Token.INTEGER, 'INTEGER'),
+      REAL: Token.create(Token.REAL, 'REAL'),
       BEGIN: Token.create(Token.BEGIN, 'BEGIN'),
       END: Token.create(Token.END, 'END')
     }

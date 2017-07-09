@@ -86,13 +86,23 @@ class Token {
   }
 
   /**
-   * Returns a Token type for an integer.
+   * Returns a Token type for an INTEGER type.
    *
    * @static
    * @returns {String}
    */
   static get INTEGER() {
     return 'INTEGER';
+  }
+
+  /**
+   * Returns a Token type for a REAL type.
+   *
+   * @static
+   * @returns {String}
+   */
+  static get REAL() {
+    return 'REAL';
   }
 
   /**
@@ -236,6 +246,86 @@ class Token {
    */
   static get IDENTIFIER() {
     return 'IDENTIFIER';
+  }
+
+  /**
+   * Returns a Token type for a PROGRAM keyword.
+   *
+   * @static
+   * @returns {String}
+   */
+  static get PROGRAM() {
+    return 'PROGRAM';
+  }
+
+  /**
+   * Returns a Token type for a VAR keyword.
+   *
+   * @static
+   * @returns {String}
+   */
+  static get VAR() {
+    return 'VAR';
+  }
+
+  /**
+   * Returns a Token type for a colon symbol (:).
+   *
+   * @static
+   * @returns {String}
+   */
+  static get COLON() {
+    return 'COLON';
+  }
+
+  /**
+   * Returns a Token type for a comma symbol (,).
+   *
+   * @static
+   * @returns {String}
+   */
+  static get COMMA() {
+    return 'COMMA';
+  }
+
+  /**
+   * Returns a Token type for an integer literals.
+   *
+   * @static
+   * @returns {String}
+   */
+  static get INTEGER_LITERAL() {
+    return 'INTEGER_LITERAL';
+  }
+
+  /**
+   * Returns a Token type for a real literals.
+   *
+   * @static
+   * @returns {String}
+   */
+  static get REAL_LITERAL() {
+    return 'REAL_LITERAL';
+  }
+
+  /**
+   * Returns a Token type for integer division (DIV).
+   *
+   * @static
+   * @returns {String}
+   */
+  static get INTEGER_DIV() {
+    return 'INTEGER_DIV';
+  }
+
+  /**
+   * Returns a Token type for float division (/).
+   *
+   * @static
+   * @returns {String}
+   */
+  static get REAL_DIV() {
+    return 'REAL_DIV';
   }
 }
 

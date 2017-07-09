@@ -68,6 +68,7 @@ describe('Lexer::Token', () => {
 
   it('Should properly return a token types from static getters', () => {
     assert.equal(Token.INTEGER, 'INTEGER');
+    assert.equal(Token.REAL, 'REAL');
     assert.equal(Token.PLUS, 'PLUS');
     assert.equal(Token.MINUS, 'MINUS');
     assert.equal(Token.ASTERISK, 'ASTERISK');
@@ -82,5 +83,13 @@ describe('Lexer::Token', () => {
     assert.equal(Token.ASSIGN, 'ASSIGN');
     assert.equal(Token.SEMICOLON, 'SEMICOLON');
     assert.equal(Token.IDENTIFIER, 'IDENTIFIER');
+    assert.equal(Token.PROGRAM, 'PROGRAM');
+    assert.equal(Token.VAR, 'VAR');
+    assert.equal(Token.COLON, 'COLON');
+    assert.equal(Token.COMMA, 'COMMA');
+    assert.equal(Token.INTEGER_LITERAL, 'INTEGER_LITERAL');
+    assert.equal(Token.REAL_LITERAL, 'REAL_LITERAL');
+    assert.equal(Token.INTEGER_DIV, 'INTEGER_DIV');
+    assert.equal(Token.REAL_DIV, 'REAL_DIV');
   });
 });
