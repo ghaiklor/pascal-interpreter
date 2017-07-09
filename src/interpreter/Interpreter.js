@@ -49,6 +49,7 @@ class Interpreter {
 
   /**
    * Visitor for {@link NoOperation} node.
+   * Do nothing here and just return the node itself.
    *
    * @param {NoOperation} node
    * @returns {NoOperation}
@@ -59,6 +60,7 @@ class Interpreter {
 
   /**
    * Visitor for {@link Compound} node.
+   * Interpreter for a compound nodes is a sequential visiting of all its children.
    *
    * @param {Compound} node
    */
@@ -68,18 +70,21 @@ class Interpreter {
 
   /**
    * Visitor for {@link Assign} node.
+   * Each time, we see an assignment, we need to resolve a variable where to assign.
+   * Also, we need to visit an expression, so we know what to assign into the variable.
    *
    * @param {Assign} node
    */
   onAssign(node) {
     const variableName = node.getVariable().getName();
 
-    process.GLOBAL_SCOPE = process.GLOBAL_SCOPE || {};
+    process.GLOBAL_SCOPE = Object.assign({}, process.GLOBAL_SCOPE);
     process.GLOBAL_SCOPE[variableName] = this.visit(node.getExpression());
   }
 
   /**
    * Visitor for {@link Variable} node.
+   * All it does is simply gets a name of a variable and tries to look up it in symbol table.
    *
    * @param {Variable} node
    */
@@ -91,6 +96,7 @@ class Interpreter {
 
   /**
    * Visitor for {@link Number} Node.
+   * Since our Number node have a numeric value, we return its value.
    *
    * @param {Number} node
    * @returns {Number}
@@ -101,6 +107,7 @@ class Interpreter {
 
   /**
    * Visitor for {@link UnaryOperator} Node.
+   * Each time we see an unary operator, visit an operand and apply operator to it.
    *
    * @param {UnaryOperator} node
    * @returns {*}
@@ -118,6 +125,8 @@ class Interpreter {
 
   /**
    * Visitor for {@link BinaryOperator} Node.
+   * First of all, we need to visit left and right sides.
+   * Afterwards, apply an operator to these results.
    *
    * @param {BinaryOperator} node
    * @returns {*}
