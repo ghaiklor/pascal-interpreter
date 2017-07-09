@@ -106,21 +106,33 @@ class Lexer {
   }
 
   /**
-   * Parses an integer from a source code.
+   * Parses an number from a source code.
    * While `currentChar` is a digit [0-9], add a char into the string stack.
-   * Afterwards, when `currentChar` is not a digit anymore, parses an integer from the stack.
+   * Afterwards, when `currentChar` is not a digit anymore, parses an number from the stack.
    *
    * @returns {Number}
    */
-  integer() {
-    let integer = '';
+  number() {
+    let number = '';
 
     while (this.currentChar && /\d/.test(this.currentChar)) {
-      integer += this.currentChar;
+      number += this.currentChar;
       this.advance();
     }
 
-    return parseInt(integer);
+    if (this.currentChar === '.') {
+      number += this.currentChar;
+      this.advance();
+
+      while (this.currentChar && /\d/.test(this.currentChar)) {
+        number += this.currentChar;
+        this.advance();
+      }
+
+      return Token.create(Token.REAL_LITERAL, parseFloat(number));
+    }
+
+    return Token.create(Token.INTEGER_LITERAL, parseInt(number));
   }
 
   /**
@@ -170,8 +182,14 @@ class Lexer {
         continue;
       }
 
+      if (this.currentChar === '{') {
+        this.advance();
+        this.skipComment();
+        continue;
+      }
+
       if (/\d/.test(this.currentChar)) {
-        return Token.create(Token.INTEGER, this.integer());
+        return this.number();
       }
 
       if (/[a-zA-Z]/.test(this.currentChar)) {
@@ -181,6 +199,16 @@ class Lexer {
       if (this.currentChar === ':' && this.peek() === '=') {
         this.advance().advance();
         return Token.create(Token.ASSIGN, ':=');
+      }
+
+      if (this.currentChar === ':') {
+        this.advance();
+        return Token.create(Token.COLON, ':');
+      }
+
+      if (this.currentChar === ',') {
+        this.advance();
+        return Token.create(Token.COMMA, ',');
       }
 
       if (this.currentChar === ';') {
@@ -252,8 +280,8 @@ class Lexer {
       PROGRAM: Token.create(Token.PROGRAM, 'PROGRAM'),
       VAR: Token.create(Token.VAR, 'VAR'),
       DIV: Token.create(Token.INTEGER_DIV, 'DIV'),
-      INTEGER: Token.create(Token.INTEGER, 'INTEGER'),
-      REAL: Token.create(Token.REAL, 'REAL'),
+      INTEGER: Token.create(Token.INTEGER_TYPE, 'INTEGER_TYPE'),
+      REAL: Token.create(Token.REAL_TYPE, 'REAL_TYPE'),
       BEGIN: Token.create(Token.BEGIN, 'BEGIN'),
       END: Token.create(Token.END, 'END')
     }

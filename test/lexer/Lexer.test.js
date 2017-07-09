@@ -106,14 +106,14 @@ describe('Lexer', () => {
     assert.equal(lexer.currentChar, '3');
   });
 
-  it('Should properly parse an integer from an input', () => {
+  it('Should properly parse an integer number from an input', () => {
     const lexer = new Lexer('256 + 3');
 
     assert.instanceOf(lexer, Lexer);
     assert.equal(lexer.input, '256 + 3');
     assert.equal(lexer.position, 0);
     assert.equal(lexer.currentChar, '2');
-    assert.equal(lexer.integer(), 256);
+    assert.equal(lexer.number().getValue(), 256);
     assert.equal(lexer.input, '256 + 3');
     assert.equal(lexer.position, 3);
     assert.equal(lexer.currentChar, ' ');
@@ -123,7 +123,28 @@ describe('Lexer', () => {
     assert.equal(lexer.input, '256 + 3');
     assert.equal(lexer.position, 6);
     assert.equal(lexer.currentChar, '3');
-    assert.equal(lexer.integer(), 3);
+    assert.equal(lexer.number().getValue(), 3);
+  });
+
+  it('Should properly parse a float number from an input', () => {
+    const lexer = new Lexer('3.14');
+
+    assert.instanceOf(lexer, Lexer);
+    assert.equal(lexer.input, '3.14');
+    assert.equal(lexer.position, 0);
+    assert.equal(lexer.currentChar, '3');
+    assert.equal(lexer.number().getValue(), 3.14);
+    assert.equal(lexer.input, '3.14');
+    assert.equal(lexer.position, 4);
+    assert.equal(lexer.currentChar, null);
+  });
+
+  it('Should properly skip comments', () => {
+    const lexer = new Lexer('abc {comment}');
+
+    assert.instanceOf(lexer, Lexer);
+    assert.ok(lexer.getNextToken().is(Token.IDENTIFIER));
+    assert.ok(lexer.getNextToken().is(Token.EOF));
   });
 
   it('Should properly parse an identifier from an input', () => {
@@ -166,13 +187,15 @@ describe('Lexer', () => {
     assert.equal(end.getValue(), 'END');
   });
 
-  it('Should properly return a stream of tokens for +, -, *, /', () => {
-    const lexer = new Lexer('+ - * /');
+  it('Should properly return a stream of tokens for +, -, *, /, : and ,', () => {
+    const lexer = new Lexer('+ - * / : ,');
 
     assert.equal(lexer.getNextToken(), 'Token(PLUS, +)');
     assert.equal(lexer.getNextToken(), 'Token(MINUS, -)');
     assert.equal(lexer.getNextToken(), 'Token(ASTERISK, *)');
     assert.equal(lexer.getNextToken(), 'Token(SLASH, /)');
+    assert.equal(lexer.getNextToken(), 'Token(COLON, :)');
+    assert.equal(lexer.getNextToken(), 'Token(COMMA, ,)');
     assert.equal(lexer.getNextToken(), 'Token(EOF, null)');
     assert.equal(lexer.getNextToken(), 'Token(EOF, null)');
   });
@@ -180,9 +203,19 @@ describe('Lexer', () => {
   it('Should properly return a stream of tokens for integers', () => {
     const lexer = new Lexer('123 456 7890');
 
-    assert.equal(lexer.getNextToken(), 'Token(INTEGER, 123)');
-    assert.equal(lexer.getNextToken(), 'Token(INTEGER, 456)');
-    assert.equal(lexer.getNextToken(), 'Token(INTEGER, 7890)');
+    assert.equal(lexer.getNextToken(), 'Token(INTEGER_LITERAL, 123)');
+    assert.equal(lexer.getNextToken(), 'Token(INTEGER_LITERAL, 456)');
+    assert.equal(lexer.getNextToken(), 'Token(INTEGER_LITERAL, 7890)');
+    assert.equal(lexer.getNextToken(), 'Token(EOF, null)');
+    assert.equal(lexer.getNextToken(), 'Token(EOF, null)');
+  });
+
+  it('Should properly return a stream of tokens for floats', () => {
+    const lexer = new Lexer('123 456.7890 555');
+
+    assert.equal(lexer.getNextToken(), 'Token(INTEGER_LITERAL, 123)');
+    assert.equal(lexer.getNextToken(), 'Token(REAL_LITERAL, 456.789)');
+    assert.equal(lexer.getNextToken(), 'Token(INTEGER_LITERAL, 555)');
     assert.equal(lexer.getNextToken(), 'Token(EOF, null)');
     assert.equal(lexer.getNextToken(), 'Token(EOF, null)');
   });
@@ -191,12 +224,12 @@ describe('Lexer', () => {
     const lexer = new Lexer('(1 + 2) * 3');
 
     assert.equal(lexer.getNextToken(), 'Token(LEFT_PARENTHESIS, ()');
-    assert.equal(lexer.getNextToken(), 'Token(INTEGER, 1)');
+    assert.equal(lexer.getNextToken(), 'Token(INTEGER_LITERAL, 1)');
     assert.equal(lexer.getNextToken(), 'Token(PLUS, +)');
-    assert.equal(lexer.getNextToken(), 'Token(INTEGER, 2)');
+    assert.equal(lexer.getNextToken(), 'Token(INTEGER_LITERAL, 2)');
     assert.equal(lexer.getNextToken(), 'Token(RIGHT_PARENTHESIS, ))');
     assert.equal(lexer.getNextToken(), 'Token(ASTERISK, *)');
-    assert.equal(lexer.getNextToken(), 'Token(INTEGER, 3)');
+    assert.equal(lexer.getNextToken(), 'Token(INTEGER_LITERAL, 3)');
     assert.equal(lexer.getNextToken(), 'Token(EOF, null)');
     assert.equal(lexer.getNextToken(), 'Token(EOF, null)');
   });
@@ -207,7 +240,7 @@ describe('Lexer', () => {
     assert.equal(lexer.getNextToken(), 'Token(BEGIN, BEGIN)');
     assert.equal(lexer.getNextToken(), 'Token(IDENTIFIER, a)');
     assert.equal(lexer.getNextToken(), 'Token(ASSIGN, :=)');
-    assert.equal(lexer.getNextToken(), 'Token(INTEGER, 2)');
+    assert.equal(lexer.getNextToken(), 'Token(INTEGER_LITERAL, 2)');
     assert.equal(lexer.getNextToken(), 'Token(SEMICOLON, ;)');
     assert.equal(lexer.getNextToken(), 'Token(END, END)');
     assert.equal(lexer.getNextToken(), 'Token(DOT, .)');
@@ -223,7 +256,7 @@ describe('Lexer', () => {
   it('Should properly throw an error during analysis', () => {
     const lexer = new Lexer('2 + ~');
 
-    assert.equal(lexer.getNextToken(), 'Token(INTEGER, 2)');
+    assert.equal(lexer.getNextToken(), 'Token(INTEGER_LITERAL, 2)');
     assert.equal(lexer.getNextToken(), 'Token(PLUS, +)');
     assert.throws(() => lexer.getNextToken(), `[Lexer]\nUnexpected character: ~`);
   });

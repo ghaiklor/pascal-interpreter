@@ -6,18 +6,19 @@ describe('Module::Entry', () => {
     process.GLOBAL_SCOPE = {};
 
     const program = `
-    BEGIN
-      BEGIN
-        number := 2;
-        a := number;
-        b := 10 * a + 10 * number / 4;
-        c := a - - b;
-      END;
-      
-      x := 11;
-    END.`;
+      PROGRAM myProgram;
+      VAR
+        a, b : INTEGER;
+        y    : REAL;
+
+      BEGIN {myProgram}
+        a := 2;
+        b := 10 * a + 10 * a DIV 4;
+        y := 20 / 7 + 3.14;
+      END.  {myProgram}
+    `;
 
     interpret(program);
-    assert.deepEqual(process.GLOBAL_SCOPE, {a: 2, x: 11, c: 27, b: 25, number: 2});
+    assert.deepEqual(process.GLOBAL_SCOPE, {a: 2, b: 25, y: 5.857142857142858});
   });
 });

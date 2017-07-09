@@ -15,12 +15,12 @@ describe('Parser', () => {
   it('Should properly consume (eat) a token', () => {
     const parser = new Parser('2 + 5');
 
-    assert.ok(parser.currentToken.is(Token.INTEGER));
-    assert.instanceOf(parser.eat(Token.INTEGER), Parser);
+    assert.ok(parser.currentToken.is(Token.INTEGER_LITERAL));
+    assert.instanceOf(parser.eat(Token.INTEGER_LITERAL), Parser);
     assert.ok(parser.currentToken.is(Token.PLUS));
     assert.instanceOf(parser.eat(Token.PLUS), Parser);
-    assert.ok(parser.currentToken.is(Token.INTEGER));
-    assert.throws(() => parser.eat(Token.ASTERISK), Error, '[Parser]\nYou provided unexpected token type "ASTERISK" while current token is Token(INTEGER, 5)');
+    assert.ok(parser.currentToken.is(Token.INTEGER_LITERAL));
+    assert.throws(() => parser.eat(Token.ASTERISK), Error, '[Parser]\nYou provided unexpected token type "ASTERISK" while current token is Token(INTEGER_LITERAL, 5)');
   });
 
   it('Should properly return NoOperation node for an empty production', () => {
@@ -118,57 +118,57 @@ describe('Parser', () => {
   });
 
   it('Should properly handle program production', () => {
-    const parser = new Parser('BEGIN END.');
+    const parser = new Parser('PROGRAM program; BEGIN END.');
     const node = parser.program();
 
-    assert.instanceOf(node, AST.Compound);
-    assert.equal(node.getChildren().length, 1);
-    assert.instanceOf(node.getChildren()[0], AST.NoOperation);
+    assert.instanceOf(node, AST.Program);
+    assert.equal(node.getName(), 'program');
+    assert.instanceOf(node.getBlock(), AST.Block);
   });
 
   it('Should properly parse a simple program', () => {
-    const program = `BEGIN x:= 2; y:= x + 5; END.`;
+    const program = `PROGRAM program; BEGIN x:= 2; y:= x + 5; END.`;
     const parser = new Parser(program);
     const ast = parser.parse();
 
     assert.instanceOf(parser, Parser);
-    assert.instanceOf(ast, AST.Compound);
+    assert.instanceOf(ast, AST.Program);
   });
 
   it('Should properly parse a program with all factors', () => {
-    const program = `BEGIN x:= +2; y:= x + -5; z:= (x + y); END.`;
+    const program = `PROGRAM program; BEGIN x:= +2; y:= x + -5; z:= (x + y); END.`;
     const parser = new Parser(program);
     const ast = parser.parse();
 
     assert.instanceOf(parser, Parser);
-    assert.instanceOf(ast, AST.Compound);
+    assert.instanceOf(ast, AST.Program);
   });
 
   it('Should properly parse a program with all terms', () => {
-    const program = `BEGIN x:= +2; y:= x * -5; z:= (x / y); END.`;
+    const program = `PROGRAM program; BEGIN x:= +2; y:= x * -5; z:= (x / y); END.`;
     const parser = new Parser(program);
     const ast = parser.parse();
 
     assert.instanceOf(parser, Parser);
-    assert.instanceOf(ast, AST.Compound);
+    assert.instanceOf(ast, AST.Program);
   });
 
   it('Should properly parse a program with all expressions', () => {
-    const program = `BEGIN x:= +2; y:= x * -5; z:= (x / y) - 5; END.`;
+    const program = `PROGRAM program; BEGIN x:= +2; y:= x * -5; z:= (x / y) - 5; END.`;
     const parser = new Parser(program);
     const ast = parser.parse();
 
     assert.instanceOf(parser, Parser);
-    assert.instanceOf(ast, AST.Compound);
+    assert.instanceOf(ast, AST.Program);
   });
 
   it('Should properly parse a program with few compound statements', () => {
-    const program = `BEGIN x:= +2; y:= x * -5; BEGIN z:= (x / y) - 5; END END.`;
+    const program = `PROGRAM program; BEGIN x:= +2; y:= x * -5; BEGIN z:= (x / y) - 5; END END.`;
     const parser = new Parser(program);
     const ast = parser.parse();
 
     assert.instanceOf(parser, Parser);
-    assert.instanceOf(ast, AST.Compound);
+    assert.instanceOf(ast, AST.Program);
   });
 
   it('Should properly throw an error if provide parser with unexpected chars', () => {
@@ -176,14 +176,14 @@ describe('Parser', () => {
   });
 
   it('Should properly throw an error if identifier is in statement list', () => {
-    const program = `BEGIN x:= y z END.`;
+    const program = `PROGRAM program; BEGIN x:= y z END.`;
     const parser = new Parser(program);
 
     assert.throws(() => parser.parse(), Error, '[Parser]\nUnexpected identifier in "statementList" production: Token(IDENTIFIER, z)');
   });
 
   it('Should properly throw an error if provide parser with wrong syntax structure', () => {
-    const parser = new Parser('BEGIN x:= 100 + / 5');
+    const parser = new Parser('PROGRAM program; BEGIN x:= 100 + / 5 END.');
 
     assert.throws(() => parser.parse(), Error, '[Parser]\nYou provided unexpected token type "IDENTIFIER" while current token is Token(SLASH, /)');
   });

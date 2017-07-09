@@ -86,26 +86,6 @@ class Token {
   }
 
   /**
-   * Returns a Token type for an INTEGER type.
-   *
-   * @static
-   * @returns {String}
-   */
-  static get INTEGER() {
-    return 'INTEGER';
-  }
-
-  /**
-   * Returns a Token type for a REAL type.
-   *
-   * @static
-   * @returns {String}
-   */
-  static get REAL() {
-    return 'REAL';
-  }
-
-  /**
    * Returns a Token type for a plus symbol (+).
    *
    * @static
@@ -156,6 +136,46 @@ class Token {
   }
 
   /**
+   * Returns a Token type for a comma symbol (,).
+   *
+   * @static
+   * @returns {String}
+   */
+  static get COMMA() {
+    return 'COMMA';
+  }
+
+  /**
+   * Returns a Token type for a dot symbol (.).
+   *
+   * @static
+   * @returns {String}
+   */
+  static get DOT() {
+    return 'DOT';
+  }
+
+  /**
+   * Returns a Token type for a colon symbol (:).
+   *
+   * @static
+   * @returns {String}
+   */
+  static get COLON() {
+    return 'COLON';
+  }
+
+  /**
+   * Returns a Token type for a semicolon symbol (;).
+   *
+   * @static
+   * @returns {String}
+   */
+  static get SEMICOLON() {
+    return 'SEMICOLON';
+  }
+
+  /**
    * Returns a Token type for a left parenthesis "(".
    *
    * @static
@@ -173,6 +193,16 @@ class Token {
    */
   static get RIGHT_PARENTHESIS() {
     return 'RIGHT_PARENTHESIS';
+  }
+
+  /**
+   * Returns a Token type for an ASSIGN sequence of chars (:=).
+   *
+   * @static
+   * @returns {String}
+   */
+  static get ASSIGN() {
+    return 'ASSIGN';
   }
 
   /**
@@ -208,36 +238,6 @@ class Token {
   }
 
   /**
-   * Returns a Token type for a dot symbol (.).
-   *
-   * @static
-   * @returns {String}
-   */
-  static get DOT() {
-    return 'DOT';
-  }
-
-  /**
-   * Returns a Token type for an ASSIGN sequence of chars (:=).
-   *
-   * @static
-   * @returns {String}
-   */
-  static get ASSIGN() {
-    return 'ASSIGN';
-  }
-
-  /**
-   * Returns a Token type for a semicolon symbol (;).
-   *
-   * @static
-   * @returns {String}
-   */
-  static get SEMICOLON() {
-    return 'SEMICOLON';
-  }
-
-  /**
    * Returns a Token type for identifiers in a program.
    * Valid identifier starts with an alphabetical character.
    *
@@ -269,23 +269,23 @@ class Token {
   }
 
   /**
-   * Returns a Token type for a colon symbol (:).
+   * Returns a Token type for an INTEGER type.
    *
    * @static
    * @returns {String}
    */
-  static get COLON() {
-    return 'COLON';
+  static get INTEGER_TYPE() {
+    return 'INTEGER_TYPE';
   }
 
   /**
-   * Returns a Token type for a comma symbol (,).
+   * Returns a Token type for a REAL type.
    *
    * @static
    * @returns {String}
    */
-  static get COMMA() {
-    return 'COMMA';
+  static get REAL_TYPE() {
+    return 'REAL_TYPE';
   }
 
   /**

@@ -73,7 +73,8 @@ class Parser {
   /**
    * factor: PLUS factor
    *       | MINUS factor
-   *       | INTEGER
+   *       | INTEGER_LITERAL
+   *       | REAL_LITERAL
    *       | LEFT_PARENTHESIS expr RIGHT_PARENTHESIS
    *       | variable
    *
@@ -88,8 +89,11 @@ class Parser {
     } else if (token.is(Token.MINUS)) {
       this.eat(Token.MINUS);
       return AST.UnaryOperator.create(token, this.factor());
-    } else if (token.is(Token.INTEGER)) {
-      this.eat(Token.INTEGER);
+    } else if (token.is(Token.INTEGER_LITERAL)) {
+      this.eat(Token.INTEGER_LITERAL);
+      return AST.Number.create(token);
+    } else if (token.is(Token.REAL_LITERAL)) {
+      this.eat(Token.REAL_LITERAL);
       return AST.Number.create(token);
     } else if (token.is(Token.LEFT_PARENTHESIS)) {
       this.eat(Token.LEFT_PARENTHESIS);
@@ -104,6 +108,7 @@ class Parser {
   /**
    * term: factor ASTERISK term
    *     | factor SLASH term
+   *     | factor REAL_DIV term
    *     | factor
    *
    * @returns {Node}
@@ -111,13 +116,15 @@ class Parser {
   term() {
     let node = this.factor();
 
-    while ([Token.ASTERISK, Token.SLASH].some(type => this.currentToken.is(type))) {
+    while ([Token.ASTERISK, Token.SLASH, Token.INTEGER_DIV].some(type => this.currentToken.is(type))) {
       const token = this.currentToken;
 
       if (token.is(Token.ASTERISK)) {
         this.eat(Token.ASTERISK);
-      } else {
+      } else if (token.is(Token.SLASH)) {
         this.eat(Token.SLASH);
+      } else {
+        this.eat(Token.INTEGER_DIV);
       }
 
       node = AST.BinaryOperator.create(node, token, this.factor());
@@ -225,14 +232,97 @@ class Parser {
   }
 
   /**
-   * program: compoundStatement DOT
+   * typeSpec: INTEGER_TYPE
+   *         | REAL_TYPE
+   *
+   * @returns {Type}
+   */
+  typeSpec() {
+    const token = this.currentToken;
+
+    if (token.is(Token.INTEGER_TYPE)) {
+      this.eat(Token.INTEGER_TYPE);
+    } else {
+      this.eat(Token.REAL_TYPE);
+    }
+
+    return AST.Type.create(token);
+  }
+
+  /**
+   * variableDeclaration: IDENTIFIER (COMMA IDENTIFIER)* COLON typeSpec
+   *
+   * @returns {Array<VarDecl>}
+   */
+  variableDeclaration() {
+    const varNodes = [AST.Variable.create(this.currentToken, this.currentToken.getValue())];
+    this.eat(Token.IDENTIFIER);
+
+    while (this.currentToken.is(Token.COMMA)) {
+      this.eat(Token.COMMA);
+      varNodes.push(AST.Variable.create(this.currentToken, this.currentToken.getValue()));
+      this.eat(Token.IDENTIFIER);
+    }
+
+    this.eat(Token.COLON);
+
+    const typeNode = this.typeSpec();
+
+    return varNodes.map(node => AST.VarDecl.create(node, typeNode));
+  }
+
+  /**
+   * declarations: VAR (variableDeclaration SEMI)+
+   *             | empty
+   *
+   * @returns {Array}
+   */
+  declarations() {
+    const declarations = [];
+
+    if (this.currentToken.is(Token.VAR)) {
+      this.eat(Token.VAR);
+
+      while (this.currentToken.is(Token.IDENTIFIER)) {
+        const varDecl = this.variableDeclaration();
+        declarations.concat(varDecl);
+        this.eat(Token.SEMICOLON);
+      }
+    }
+
+    return declarations;
+  }
+
+  /**
+   * block: declarations compoundStatement
+   *
+   * @returns {Block}
+   */
+  block() {
+    const declarations = this.declarations();
+    const compoundStatement = this.compoundStatement();
+
+    return AST.Block.create(declarations, compoundStatement);
+  }
+
+  /**
+   * program: PROGRAM variable SEMICOLON block DOT
    *
    * @returns {Node}
    */
   program() {
-    const node = this.compoundStatement();
+    this.eat(Token.PROGRAM);
+
+    const variableNode = this.variable();
+    const programName = variableNode.getName();
+
+    this.eat(Token.SEMICOLON);
+
+    const blockNode = this.block();
+    const programNode = AST.Program.create(programName, blockNode);
     this.eat(Token.DOT);
-    return node;
+
+    return programNode;
   }
 
   /**

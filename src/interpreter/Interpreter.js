@@ -144,7 +144,47 @@ class Interpreter {
       return this.visit(lhs) * this.visit(rhs);
     } else if (operator.is(Token.SLASH)) {
       return this.visit(lhs) / this.visit(rhs);
+    } else if (operator.is(Token.INTEGER_DIV)) {
+      return this.visit(lhs) / this.visit(rhs);
     }
+  }
+
+  /**
+   * Visitor for {@link Program} node.
+   *
+   * @param {Program} node
+   */
+  onProgram(node) {
+    this.visit(node.getBlock());
+  }
+
+  /**
+   * Visitor for {@link Block} node.
+   *
+   * @param {Block} node
+   */
+  onBlock(node) {
+    node.getDeclarations().forEach(decl => this.visit(decl));
+    this.visit(node.getCompound());
+  }
+
+  /**
+   * Visitor for {@link VarDecl} node.
+   *
+   * @param {VarDecl} node
+   * @returns {VarDecl}
+   */
+  onVarDecl(node) {
+    return node;
+  }
+
+  /**
+   * Visitor for {@link Type} node.
+   *
+   * @param {Type} node
+   */
+  onType(node) {
+    return node;
   }
 
   /**

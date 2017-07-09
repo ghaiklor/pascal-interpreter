@@ -2,7 +2,7 @@ const {assert} = require('chai');
 const Token = require('../../src/lexer/Token');
 const Number = require('../../src/ast/Number');
 
-const TOKEN = Token.create(Token.INTEGER, 500);
+const TOKEN = Token.create(Token.INTEGER_LITERAL, 500);
 
 describe('AST::Number', () => {
   it('Should properly instantiate Number node', () => {
@@ -10,7 +10,7 @@ describe('AST::Number', () => {
 
     assert.instanceOf(node, Number);
     assert.instanceOf(node.token, Token);
-    assert.ok(node.token.is(Token.INTEGER));
+    assert.ok(node.token.is(Token.INTEGER_LITERAL));
     assert.equal(node.value, 500);
   });
 
