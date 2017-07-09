@@ -91,6 +91,21 @@ class Lexer {
   }
 
   /**
+   * Skips all the comments in a source code.
+   * While `currentChar` is not a closing comments block, we advance the pointer.
+   * The last one advance is for eating a curly brace itself.
+   *
+   * @returns {Lexer}
+   */
+  skipComment() {
+    while (this.currentChar && this.currentChar !== '}') {
+      this.advance();
+    }
+
+    return this.advance();
+  }
+
+  /**
    * Parses an integer from a source code.
    * While `currentChar` is a digit [0-9], add a char into the string stack.
    * Afterwards, when `currentChar` is not a digit anymore, parses an integer from the stack.

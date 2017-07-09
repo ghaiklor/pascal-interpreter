@@ -89,6 +89,23 @@ describe('Lexer', () => {
     assert.equal(lexer.currentChar, '3');
   });
 
+  it('Should properly skip comments in an input', () => {
+    const lexer = new Lexer('{2 +} 3');
+
+    assert.instanceOf(lexer, Lexer);
+    assert.equal(lexer.input, '{2 +} 3');
+    assert.equal(lexer.position, 0);
+    assert.equal(lexer.currentChar, '{');
+    assert.instanceOf(lexer.skipComment(), Lexer);
+    assert.equal(lexer.input, '{2 +} 3');
+    assert.equal(lexer.position, 5);
+    assert.equal(lexer.currentChar, ' ');
+    assert.instanceOf(lexer.advance(), Lexer);
+    assert.equal(lexer.input, '{2 +} 3');
+    assert.equal(lexer.position, 6);
+    assert.equal(lexer.currentChar, '3');
+  });
+
   it('Should properly parse an integer from an input', () => {
     const lexer = new Lexer('256 + 3');
 
