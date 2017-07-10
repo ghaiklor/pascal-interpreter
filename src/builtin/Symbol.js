@@ -37,6 +37,15 @@ class Symbol {
   }
 
   /**
+   * Helper for converting Symbol into string representation.
+   *
+   * @returns {String}
+   */
+  toString() {
+    return `Symbol(${this.getName()}, ${this.getType()})`;
+  }
+
+  /**
    * Static helper for creating new Symbol instance.
    *
    * @static

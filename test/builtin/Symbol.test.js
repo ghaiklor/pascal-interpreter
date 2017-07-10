@@ -24,4 +24,12 @@ describe('Builtin::Symbol', () => {
     assert.isString(symbol.type);
     assert.equal(symbol.getType(), 'TYPE');
   });
+
+  it('Should properly convert to string representation', () => {
+    const symbol = Symbol.create('INTEGER', 'TYPE');
+
+    assert.isString(symbol.name);
+    assert.isString(symbol.type);
+    assert.equal(symbol, 'Symbol(INTEGER, TYPE)');
+  });
 });

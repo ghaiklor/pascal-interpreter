@@ -14,6 +14,6 @@ describe('Builtin::TypeSymbol', () => {
     const symbol = TypeSymbol.create('REAL');
 
     assert.instanceOf(symbol, TypeSymbol);
-    assert.equal(symbol, 'REAL');
+    assert.equal(symbol, 'TypeSymbol(REAL)');
   });
 });

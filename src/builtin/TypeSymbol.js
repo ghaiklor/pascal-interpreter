@@ -13,7 +13,7 @@ class TypeSymbol extends Symbol {
    * @returns {String}
    */
   toString() {
-    return this.getName();
+    return `TypeSymbol(${this.getName()})`;
   }
 
   /**
