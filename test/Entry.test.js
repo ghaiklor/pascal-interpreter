@@ -8,17 +8,19 @@ describe('Module::Entry', () => {
     const program = `
       PROGRAM myProgram;
       VAR
-        a, b : INTEGER;
-        y    : REAL;
+        number : INTEGER;
+        a, b   : INTEGER;
+        y      : REAL;
 
       BEGIN {myProgram}
-        a := 2;
+        number := 2;
+        a := number;
         b := 10 * a + 10 * a DIV 4;
         y := 20 / 7 + 3.14;
       END.  {myProgram}
     `;
 
     interpret(program);
-    assert.deepEqual(process.GLOBAL_SCOPE, {a: 2, b: 25, y: 5.857142857142858});
+    assert.deepEqual(process.GLOBAL_SCOPE, {a: 2, b: 25, number: 2, y: 5.857142857142858});
   });
 });

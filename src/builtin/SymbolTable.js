@@ -1,3 +1,5 @@
+const TypeSymbol = require('./TypeSymbol');
+
 /**
  * Symbol table for storing all the symbols in a program.
  *
@@ -17,6 +19,20 @@ class SymbolTable {
    */
   constructor() {
     this.symbols = new Map();
+
+    this.initBuiltin();
+  }
+
+  /**
+   * Initialize the built-in types when the symbol table instance is created.
+   *
+   * @returns {SymbolTable}
+   */
+  initBuiltin() {
+    this.define(TypeSymbol.create('INTEGER'));
+    this.define(TypeSymbol.create('REAL'));
+
+    return this;
   }
 
   /**

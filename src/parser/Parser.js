@@ -278,14 +278,14 @@ class Parser {
    * @returns {Array}
    */
   declarations() {
-    const declarations = [];
+    let declarations = [];
 
     if (this.currentToken.is(Token.VAR)) {
       this.eat(Token.VAR);
 
       while (this.currentToken.is(Token.IDENTIFIER)) {
         const varDecl = this.variableDeclaration();
-        declarations.concat(varDecl);
+        declarations = declarations.concat(varDecl);
         this.eat(Token.SEMICOLON);
       }
     }
