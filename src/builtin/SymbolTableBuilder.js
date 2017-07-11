@@ -136,6 +136,16 @@ class SymbolTableBuilder {
   }
 
   /**
+   * Visitor for ProcedureDecl node.
+   *
+   * @param {ProcedureDecl} node
+   * @returns {ProcedureDecl}
+   */
+  onProcedureDecl(node) {
+    return node;
+  }
+
+  /**
    * Static helper for creating SymbolTableBuilder instance.
    *
    * @static

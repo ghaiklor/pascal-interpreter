@@ -283,7 +283,8 @@ class Lexer {
       INTEGER: Token.create(Token.INTEGER_TYPE, 'INTEGER_TYPE'),
       REAL: Token.create(Token.REAL_TYPE, 'REAL_TYPE'),
       BEGIN: Token.create(Token.BEGIN, 'BEGIN'),
-      END: Token.create(Token.END, 'END')
+      END: Token.create(Token.END, 'END'),
+      PROCEDURE: Token.create(Token.PROCEDURE, 'PROCEDURE')
     }
   }
 }

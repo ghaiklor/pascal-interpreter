@@ -188,6 +188,16 @@ class Interpreter {
   }
 
   /**
+   * Visitor for {@link ProcedureDecl} node.
+   *
+   * @param {ProcedureDecl} node
+   * @returns {ProcedureDecl}
+   */
+  onProcedureDecl(node) {
+    return node;
+  }
+
+  /**
    * Interprets an AST and returns a result.
    *
    * @returns {*}

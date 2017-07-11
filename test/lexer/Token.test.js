@@ -91,5 +91,6 @@ describe('Lexer::Token', () => {
     assert.equal(Token.REAL_LITERAL, 'REAL_LITERAL');
     assert.equal(Token.INTEGER_DIV, 'INTEGER_DIV');
     assert.equal(Token.REAL_DIV, 'REAL_DIV');
+    assert.equal(Token.PROCEDURE, 'PROCEDURE');
   });
 });

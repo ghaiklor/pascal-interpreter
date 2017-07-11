@@ -272,7 +272,8 @@ class Parser {
   }
 
   /**
-   * declarations: VAR (variableDeclaration SEMI)+
+   * declarations: VAR (variableDeclaration SEMICOLON)+
+   *             | (PROCEDURE ID SEMICOLON block SEMICOLON)*
    *             | empty
    *
    * @returns {Array}
@@ -288,6 +289,18 @@ class Parser {
         declarations = declarations.concat(varDecl);
         this.eat(Token.SEMICOLON);
       }
+    }
+
+    while (this.currentToken.is(Token.PROCEDURE)) {
+      this.eat(Token.PROCEDURE);
+      const procedureName = this.currentToken.getValue();
+      this.eat(Token.IDENTIFIER);
+      this.eat(Token.SEMICOLON);
+      const blockNode = this.block();
+      this.eat(Token.SEMICOLON);
+
+      const procedureNode = AST.ProcedureDecl.create(procedureName, blockNode);
+      declarations.push(procedureNode);
     }
 
     return declarations;

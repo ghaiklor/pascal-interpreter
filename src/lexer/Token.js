@@ -327,6 +327,16 @@ class Token {
   static get REAL_DIV() {
     return 'REAL_DIV';
   }
+
+  /**
+   * Returns a Token type for PROCEDURE keyword (PROCEDURE).
+   *
+   * @static
+   * @returns {String}
+   */
+  static get PROCEDURE() {
+    return 'PROCEDURE';
+  }
 }
 
 module.exports = Token;

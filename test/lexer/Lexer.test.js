@@ -269,5 +269,6 @@ describe('Lexer', () => {
     assert.instanceOf(Lexer.RESERVED_WORDS.REAL, Token);
     assert.instanceOf(Lexer.RESERVED_WORDS.BEGIN, Token);
     assert.instanceOf(Lexer.RESERVED_WORDS.END, Token);
+    assert.instanceOf(Lexer.RESERVED_WORDS.PROCEDURE, Token);
   });
 });

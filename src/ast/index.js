@@ -5,6 +5,7 @@ const Compound = require('./Compound');
 const Node = require('./Node');
 const NoOperation = require('./NoOperation');
 const Number = require('./Number');
+const ProcedureDecl = require('./ProcedureDecl');
 const Program = require('./Program');
 const Type = require('./Type');
 const UnaryOperator = require('./UnaryOperator');
@@ -19,6 +20,7 @@ module.exports = {
   Node,
   NoOperation,
   Number,
+  ProcedureDecl,
   Program,
   Type,
   UnaryOperator,
