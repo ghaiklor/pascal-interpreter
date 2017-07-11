@@ -1,8 +1,8 @@
 const {assert} = require('chai');
-const VariableSymbol = require('../../src/builtin/VariableSymbol');
-const TypeSymbol = require('../../src/builtin/TypeSymbol');
+const VariableSymbol = require('../../src/symbols/VariableSymbol');
+const TypeSymbol = require('../../src/symbols/TypeSymbol');
 
-describe('Builtin::VariableSymbol', () => {
+describe('Symbols::VariableSymbol', () => {
   it('Should properly instantiate', () => {
     const symbol = VariableSymbol.create('x', TypeSymbol.create('INTEGER'));
 

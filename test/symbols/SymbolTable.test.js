@@ -1,9 +1,9 @@
 const {assert} = require('chai');
-const SymbolTable = require('../../src/builtin/SymbolTable');
-const TypeSymbol = require('../../src/builtin/TypeSymbol');
-const VariableSymbol = require('../../src/builtin/VariableSymbol');
+const SymbolTable = require('../../src/symbols/SymbolTable');
+const TypeSymbol = require('../../src/symbols/TypeSymbol');
+const VariableSymbol = require('../../src/symbols/VariableSymbol');
 
-describe('Builtin::SymbolTable', () => {
+describe('Symbols::SymbolTable', () => {
   it('Should properly instantiate', () => {
     const table = SymbolTable.create();
 

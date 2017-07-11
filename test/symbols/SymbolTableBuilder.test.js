@@ -1,9 +1,9 @@
 const {assert} = require('chai');
-const SymbolTableBuilder = require('../../src/builtin/SymbolTableBuilder');
-const SymbolTable = require('../../src/builtin/SymbolTable');
+const SymbolTableBuilder = require('../../src/symbols/SymbolTableBuilder');
+const SymbolTable = require('../../src/symbols/SymbolTable');
 const Parser = require('../../src/parser');
 
-describe('Builtin::SymbolTableBuilder', () => {
+describe('Symbols::SymbolTableBuilder', () => {
   it('Should properly instantiate', () => {
     const builder = SymbolTableBuilder.create();
 

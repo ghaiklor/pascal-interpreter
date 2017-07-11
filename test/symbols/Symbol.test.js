@@ -1,7 +1,7 @@
 const {assert} = require('chai');
-const Symbol = require('../../src/builtin/Symbol');
+const Symbol = require('../../src/symbols/Symbol');
 
-describe('Builtin::Symbol', () => {
+describe('Symbols::Symbol', () => {
   it('Should properly instantiate', () => {
     const symbol = Symbol.create('INTEGER');
 
