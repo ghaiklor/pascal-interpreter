@@ -7,7 +7,7 @@ describe('Symbols::ProcedureSymbol', () => {
 
     assert.instanceOf(symbol, ProcedureSymbol);
     assert.equal(symbol.name, 'foo');
-    assert.isNull(symbol.params);
+    assert.isArray(symbol.params);
   });
 
   it('Should properly return params', () => {

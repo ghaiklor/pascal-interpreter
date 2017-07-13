@@ -13,7 +13,7 @@ class ProcedureSymbol extends Symbol {
    * @param {String} name
    * @param {Array} params
    */
-  constructor(name, params = null) {
+  constructor(name, params = []) {
     super(name);
 
     this.params = params;

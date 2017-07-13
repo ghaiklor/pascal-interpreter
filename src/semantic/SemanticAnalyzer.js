@@ -1,12 +1,13 @@
 const SymbolTable = require('../symbols/SymbolTable');
 const VariableSymbol = require('../symbols/VariableSymbol');
+const ProcedureSymbol = require('../symbols/ProcedureSymbol');
 
 class SemanticAnalyzer {
   /**
    * Creates new instance of SemanticAnalyzer.
    */
   constructor() {
-    this.scope = SymbolTable.create('global', 1);
+    this.scope = null;
   }
 
   /**
@@ -36,6 +37,32 @@ class SemanticAnalyzer {
    * @param {Program} node
    */
   onProgram(node) {
+    this.scope = SymbolTable.create('global', 1);
+    this.visit(node.getBlock());
+  }
+
+  /**
+   * Visitor for ProcedureDecl node.
+   *
+   * @param {ProcedureDecl} node
+   */
+  onProcedureDecl(node) {
+    const procedureName = node.getName();
+    const procedureSymbol = ProcedureSymbol.create(procedureName);
+
+    this.scope.define(procedureSymbol);
+
+    this.scope = SymbolTable.create(procedureName, 2);
+
+    node.getParams().forEach(param => {
+      const paramType = this.scope.lookup(param.getType().getValue());
+      const paramName = param.getVariable().getName();
+      const varSymbol = VariableSymbol.create(paramName, paramType);
+
+      this.scope.define(varSymbol);
+      procedureSymbol.params.push(varSymbol);
+    });
+
     this.visit(node.getBlock());
   }
 
