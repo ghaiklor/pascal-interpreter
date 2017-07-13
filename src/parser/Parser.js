@@ -272,14 +272,54 @@ class Parser {
   }
 
   /**
+   * formalParameters: ID (COMMA ID)* COLON type_spec
+   *
+   * @returns {Array<Param>}
+   */
+  formalParameters() {
+    const varNodes = [AST.Variable.create(this.currentToken, this.currentToken.getValue())];
+    this.eat(Token.IDENTIFIER);
+
+    while (this.currentToken.is(Token.COMMA)) {
+      this.eat(Token.COMMA);
+      varNodes.push(AST.Variable.create(this.currentToken, this.currentToken.getValue()));
+      this.eat(Token.IDENTIFIER);
+    }
+
+    this.eat(Token.COLON);
+
+    const typeNode = this.typeSpec();
+
+    return varNodes.map(varNode => AST.Param.create(varNode, typeNode));
+  }
+
+  /**
+   * formalParameterList: formalParameters
+   *                    | formalParameters SEMICOLON formalParameterList
+   *
+   * @returns {Array<Param>}
+   */
+  formalParameterList() {
+    let params = this.formalParameters();
+
+    while (this.currentToken.is(Token.SEMICOLON)) {
+      this.eat(Token.SEMICOLON);
+      params = params.concat(this.formalParameters());
+    }
+
+    return params;
+  }
+
+  /**
    * declarations: VAR (variableDeclaration SEMICOLON)+
-   *             | (PROCEDURE ID SEMICOLON block SEMICOLON)*
+   *             | (PROCEDURE ID (LPAREN formalParameterList RPAREN)? SEMICOLON block SEMICOLON)*
    *             | empty
    *
    * @returns {Array}
    */
   declarations() {
     let declarations = [];
+    let params = [];
 
     if (this.currentToken.is(Token.VAR)) {
       this.eat(Token.VAR);
@@ -293,13 +333,21 @@ class Parser {
 
     while (this.currentToken.is(Token.PROCEDURE)) {
       this.eat(Token.PROCEDURE);
+
       const procedureName = this.currentToken.getValue();
       this.eat(Token.IDENTIFIER);
+
+      if (this.currentToken.is(Token.LEFT_PARENTHESIS)) {
+        this.eat(Token.LEFT_PARENTHESIS);
+        params = this.formalParameterList();
+        this.eat(Token.RIGHT_PARENTHESIS);
+      }
+
       this.eat(Token.SEMICOLON);
       const blockNode = this.block();
       this.eat(Token.SEMICOLON);
 
-      const procedureNode = AST.ProcedureDecl.create(procedureName, blockNode);
+      const procedureNode = AST.ProcedureDecl.create(procedureName, params, blockNode);
       declarations.push(procedureNode);
     }
 

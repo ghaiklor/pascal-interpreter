@@ -171,6 +171,24 @@ describe('Parser', () => {
     assert.instanceOf(ast, AST.Program);
   });
 
+  it('Should properly parse a program with procedures and parameters', () => {
+    const program = `PROGRAM program; PROCEDURE Foo(a, b: INTEGER; c: REAL); BEGIN END; BEGIN END.`;
+    const parser = new Parser(program);
+    const ast = parser.parse();
+
+    assert.instanceOf(parser, Parser);
+    assert.instanceOf(ast, AST.Program);
+  });
+
+  it('Should properly parse a program with procedures and no parameters', () => {
+    const program = `PROGRAM program; PROCEDURE Foo; BEGIN END; BEGIN END.`;
+    const parser = new Parser(program);
+    const ast = parser.parse();
+
+    assert.instanceOf(parser, Parser);
+    assert.instanceOf(ast, AST.Program);
+  });
+
   it('Should properly throw an error if provide parser with unexpected chars', () => {
     assert.throws(() => new Parser('~~'), Error, '[Lexer]\nUnexpected character: ~');
   });

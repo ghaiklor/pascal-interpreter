@@ -10,6 +10,7 @@ describe('AST::EntryPoint', () => {
     assert.isFunction(AST.Node);
     assert.isFunction(AST.NoOperation);
     assert.isFunction(AST.Number);
+    assert.isFunction(AST.Param);
     assert.isFunction(AST.ProcedureDecl);
     assert.isFunction(AST.Program);
     assert.isFunction(AST.Type);

@@ -11,12 +11,14 @@ class ProcedureDecl extends Node {
    * Creates new instance of procedure declaration node.
    *
    * @param {String} name Procedure name
+   * @param {Array<Param>} params Array of Param nodes
    * @param {Block} block
    */
-  constructor(name, block) {
+  constructor(name, params, block) {
     super(null);
 
     this.name = name;
+    this.params = params;
     this.block = block;
   }
 
@@ -27,6 +29,15 @@ class ProcedureDecl extends Node {
    */
   getName() {
     return this.name;
+  }
+
+  /**
+   * Get params of a procedure.
+   *
+   * @returns {Array<Param>}
+   */
+  getParams() {
+    return this.params;
   }
 
   /**
@@ -43,11 +54,12 @@ class ProcedureDecl extends Node {
    *
    * @static
    * @param {String} name Procedure name
+   * @param {Array<Param>} params Array of Param nodes
    * @param {Block} block
    * @returns {ProcedureDecl}
    */
-  static create(name, block) {
-    return new this(name, block);
+  static create(name, params, block) {
+    return new this(name, params, block);
   }
 }
 
