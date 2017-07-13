@@ -11,14 +11,18 @@ class SymbolTable {
    * Creates new empty symbol table.
    * Symbol tables are used for storing and tracking various symbols in source code.
    *
+   * @param {String} scopeName
+   * @param {Number} scopeLevel
    * @example
    * const table = SymbolTable.create();
    * const symbol = VariableSymbol.create();
    *
    * table.define(symbol);
    */
-  constructor() {
+  constructor(scopeName, scopeLevel) {
     this.symbols = new Map();
+    this.scopeName = scopeName;
+    this.scopeLevel = scopeLevel;
 
     this.initBuiltin();
   }
@@ -69,17 +73,19 @@ class SymbolTable {
       entries += `${key}:${value}\n`;
     }
 
-    return `Symbols:\n${entries}`;
+    return `Scope Name: ${this.scopeName}\nScope Level: ${this.scopeLevel}\n\nEntries\n${entries}`;
   }
 
   /**
    * Static helper for creating new SymbolTable instance.
    *
    * @static
+   * @param {String} scopeName
+   * @param {Number} scopeLevel
    * @returns {SymbolTable}
    */
-  static create() {
-    return new this();
+  static create(scopeName, scopeLevel) {
+    return new this(scopeName, scopeLevel);
   }
 }
 

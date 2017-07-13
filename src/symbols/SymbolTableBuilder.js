@@ -12,7 +12,7 @@ class SymbolTableBuilder {
    * Creates new instance of SymbolTableBuilder.
    */
   constructor() {
-    this.symbolTable = SymbolTable.create();
+    this.scope = SymbolTable.create();
   }
 
   /**
@@ -102,11 +102,11 @@ class SymbolTableBuilder {
    */
   onVarDecl(node) {
     const typeName = node.getType().getValue();
-    const typeSymbol = this.symbolTable.lookup(typeName);
+    const typeSymbol = this.scope.lookup(typeName);
     const varName = node.getVariable().getName();
     const varSymbol = VariableSymbol.create(varName, typeSymbol);
 
-    this.symbolTable.define(varSymbol);
+    this.scope.define(varSymbol);
   }
 
   /**
@@ -116,7 +116,7 @@ class SymbolTableBuilder {
    */
   onAssign(node) {
     const varName = node.getVariable().getName();
-    const varSymbol = this.symbolTable.lookup(varName);
+    const varSymbol = this.scope.lookup(varName);
 
     if (!varSymbol) throw new Error(`Variable ${varName} is not declared`);
 
@@ -130,7 +130,7 @@ class SymbolTableBuilder {
    */
   onVariable(node) {
     const varName = node.getName();
-    const varSymbol = this.symbolTable.lookup(varName);
+    const varSymbol = this.scope.lookup(varName);
 
     if (!varSymbol) throw new Error(`Variable ${varName} is not declared`);
   }

@@ -8,7 +8,7 @@ describe('Symbols::SymbolTableBuilder', () => {
     const builder = SymbolTableBuilder.create();
 
     assert.instanceOf(builder, SymbolTableBuilder);
-    assert.instanceOf(builder.symbolTable, SymbolTable);
+    assert.instanceOf(builder.scope, SymbolTable);
   });
 
   it('Should properly build a symbol table for a simple program', () => {
@@ -19,8 +19,8 @@ describe('Symbols::SymbolTableBuilder', () => {
 
     tableBuilder.visit(ast);
 
-    assert.equal(tableBuilder.symbolTable.symbols.size, 4);
-    assert.equal(tableBuilder.symbolTable.lookup('x').getName(), 'x');
-    assert.equal(tableBuilder.symbolTable.lookup('y').getName(), 'y');
+    assert.equal(tableBuilder.scope.symbols.size, 4);
+    assert.equal(tableBuilder.scope.lookup('x').getName(), 'x');
+    assert.equal(tableBuilder.scope.lookup('y').getName(), 'y');
   });
 });

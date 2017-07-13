@@ -5,17 +5,19 @@ const VariableSymbol = require('../../src/symbols/VariableSymbol');
 
 describe('Symbols::SymbolTable', () => {
   it('Should properly instantiate', () => {
-    const table = SymbolTable.create();
+    const table = SymbolTable.create('global', 1);
 
     assert.instanceOf(table, SymbolTable);
     assert.instanceOf(table.symbols, Map);
     assert.equal(table.symbols.size, 2);
     assert.instanceOf(table.symbols.get('INTEGER'), TypeSymbol);
     assert.instanceOf(table.symbols.get('REAL'), TypeSymbol);
+    assert.equal(table.scopeName, 'global');
+    assert.equal(table.scopeLevel, 1);
   });
 
   it('Should properly define a symbol', () => {
-    const table = SymbolTable.create();
+    const table = SymbolTable.create('global', 1);
     const typeSymbol = TypeSymbol.create('INTEGER');
     const variableSymbol = VariableSymbol.create('x', typeSymbol);
 
@@ -29,7 +31,7 @@ describe('Symbols::SymbolTable', () => {
   });
 
   it('Should properly lookup a symbol', () => {
-    const table = SymbolTable.create();
+    const table = SymbolTable.create('global', 1);
     const typeSymbol = TypeSymbol.create('INTEGER');
     const variableSymbol = VariableSymbol.create('x', typeSymbol);
 
@@ -46,9 +48,9 @@ describe('Symbols::SymbolTable', () => {
   });
 
   it('Should properly converts into string representation', () => {
-    const table = SymbolTable.create();
+    const table = SymbolTable.create('global', 1);
 
     assert.instanceOf(table, SymbolTable);
-    assert.equal(table, `Symbols:\nINTEGER:TypeSymbol(INTEGER)\nREAL:TypeSymbol(REAL)\n`);
+    assert.equal(table, `Scope Name: global\nScope Level: 1\n\nEntries\nINTEGER:TypeSymbol(INTEGER)\nREAL:TypeSymbol(REAL)\n`);
   });
 });

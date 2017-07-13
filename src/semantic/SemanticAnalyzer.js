@@ -6,7 +6,7 @@ class SemanticAnalyzer {
    * Creates new instance of SemanticAnalyzer.
    */
   constructor() {
-    this.symbolTable = SymbolTable.create();
+    this.scope = SymbolTable.create('global', 1);
   }
 
   /**
@@ -64,14 +64,14 @@ class SemanticAnalyzer {
    */
   onVarDecl(node) {
     const typeName = node.getType().getValue();
-    const typeSymbol = this.symbolTable.lookup(typeName);
+    const typeSymbol = this.scope.lookup(typeName);
 
     const varName = node.getVariable().getName();
     const varSymbol = VariableSymbol.create(varName, typeSymbol);
 
-    if (this.symbolTable.lookup(varName)) throw new Error(`Duplicate declaration of ${varName}`);
+    if (this.scope.lookup(varName)) throw new Error(`Duplicate declaration of ${varName}`);
 
-    this.symbolTable.define(varSymbol);
+    this.scope.define(varSymbol);
   }
 
   /**
@@ -81,7 +81,7 @@ class SemanticAnalyzer {
    */
   onVariable(node) {
     const varName = node.getName();
-    const varSymbol = this.symbolTable.lookup(varName);
+    const varSymbol = this.scope.lookup(varName);
 
     if (!varSymbol) throw new Error(`Variable ${varName} is not resolved`);
   }
