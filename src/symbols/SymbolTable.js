@@ -13,16 +13,18 @@ class SymbolTable {
    *
    * @param {String} scopeName
    * @param {Number} scopeLevel
+   * @param {SymbolTable} [enclosingScope=null]
    * @example
    * const table = SymbolTable.create();
    * const symbol = VariableSymbol.create();
    *
    * table.define(symbol);
    */
-  constructor(scopeName, scopeLevel) {
+  constructor(scopeName, scopeLevel, enclosingScope = null) {
     this.symbols = new Map();
     this.scopeName = scopeName;
     this.scopeLevel = scopeLevel;
+    this.enclosingScope = enclosingScope;
 
     this.initBuiltin();
   }
@@ -55,10 +57,15 @@ class SymbolTable {
    * Lookup for a symbol in symbol table by its name.
    *
    * @param {String} name
+   * @param {Boolean} [currentScopeOnly=false]
    * @returns {Symbol}
    */
-  lookup(name) {
-    return this.symbols.get(name);
+  lookup(name, currentScopeOnly = false) {
+    const symbol = this.symbols.get(name);
+
+    if (symbol) return symbol;
+    if (currentScopeOnly) return null;
+    if (this.enclosingScope) return this.enclosingScope.lookup(name);
   }
 
   /**
@@ -82,10 +89,11 @@ class SymbolTable {
    * @static
    * @param {String} scopeName
    * @param {Number} scopeLevel
+   * @param {SymbolTable} [enclosingScope=null]
    * @returns {SymbolTable}
    */
-  static create(scopeName, scopeLevel) {
-    return new this(scopeName, scopeLevel);
+  static create(scopeName, scopeLevel, enclosingScope) {
+    return new this(scopeName, scopeLevel, enclosingScope);
   }
 }
 

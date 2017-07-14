@@ -14,6 +14,7 @@ describe('Symbols::SymbolTable', () => {
     assert.instanceOf(table.symbols.get('REAL'), TypeSymbol);
     assert.equal(table.scopeName, 'global');
     assert.equal(table.scopeLevel, 1);
+    assert.isNull(table.enclosingScope);
   });
 
   it('Should properly define a symbol', () => {

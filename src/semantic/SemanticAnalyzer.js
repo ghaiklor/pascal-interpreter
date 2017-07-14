@@ -37,8 +37,9 @@ class SemanticAnalyzer {
    * @param {Program} node
    */
   onProgram(node) {
-    this.scope = SymbolTable.create('global', 1);
+    this.scope = SymbolTable.create('global', 1, this.scope);
     this.visit(node.getBlock());
+    this.scope = this.scope.enclosingScope;
   }
 
   /**
@@ -51,8 +52,7 @@ class SemanticAnalyzer {
     const procedureSymbol = ProcedureSymbol.create(procedureName);
 
     this.scope.define(procedureSymbol);
-
-    this.scope = SymbolTable.create(procedureName, 2);
+    this.scope = SymbolTable.create(procedureName, this.scope.scopeLevel + 1, this.scope);
 
     node.getParams().forEach(param => {
       const paramType = this.scope.lookup(param.getType().getValue());
@@ -64,6 +64,7 @@ class SemanticAnalyzer {
     });
 
     this.visit(node.getBlock());
+    this.scope = this.scope.enclosingScope;
   }
 
   /**
@@ -96,7 +97,7 @@ class SemanticAnalyzer {
     const varName = node.getVariable().getName();
     const varSymbol = VariableSymbol.create(varName, typeSymbol);
 
-    if (this.scope.lookup(varName)) throw new Error(`Duplicate declaration of ${varName}`);
+    if (this.scope.lookup(varName, true)) throw new Error(`Duplicate declaration of ${varName}`);
 
     this.scope.define(varSymbol);
   }

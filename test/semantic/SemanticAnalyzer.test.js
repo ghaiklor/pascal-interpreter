@@ -32,13 +32,18 @@ describe('Semantic::SemanticAnalyzer', () => {
     assert.throws(() => analyzer.visit(ast), Error, 'Duplicate declaration of x');
   });
 
-  it('Should properly create two symbol tables', () => {
+  it('Should properly traverse an AST and create/remove symbol tables', () => {
     const program = `
       PROGRAM main;
         VAR x, y: REAL;
           
         PROCEDURE Alpha(a: INTEGER);
           VAR y: INTEGER;
+        BEGIN
+        END;
+        
+        PROCEDURE Beta(a: INTEGER);
+          VAR y: REAL;
         BEGIN
         END;
       
@@ -51,7 +56,6 @@ describe('Semantic::SemanticAnalyzer', () => {
 
     analyzer.visit(ast);
 
-    assert.equal(analyzer.scope.scopeLevel, 2);
-    assert.equal(analyzer.scope.scopeName, 'Alpha');
+    assert.isNull(analyzer.scope);
   });
 });
