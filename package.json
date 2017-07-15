@@ -1,7 +1,7 @@
 {
   "name": "pascal-interpreter",
   "version": "1.0.0",
-  "description": "A simple interpreter for a large subset of Pascal language with a source-level debugger written for educational purposes",
+  "description": "A simple interpreter for a large subset of Pascal language written for educational purposes",
   "license": "MIT",
   "author": "ghaiklor",
   "main": "src/index.js",
