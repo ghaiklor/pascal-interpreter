@@ -23,4 +23,32 @@ describe('Module::Entry', () => {
     interpret(program);
     assert.deepEqual(process.GLOBAL_SCOPE, {a: 2, b: 25, number: 2, y: 5.857142857142858});
   });
+
+  it('Should properly interpret the complex program with all interpreters features', () => {
+    process.GLOBAL_SCOPE = {};
+
+    const program = `
+      PROGRAM myProgram;
+      VAR
+        number : INTEGER;
+        a, b   : INTEGER;
+        y      : REAL;
+        
+      PROCEDURE Alpha(a: INTEGER);
+        VAR
+          number: INTEGER;
+      BEGIN
+      END;
+
+      BEGIN {myProgram}
+        number := 2;
+        a := number;
+        b := 10 * a + 10 * a DIV 4;
+        y := 20 / 7 + 3.14;
+      END.  {myProgram}
+    `;
+
+    interpret(program);
+    assert.deepEqual(process.GLOBAL_SCOPE, {a: 2, b: 25, number: 2, y: 5.857142857142858});
+  });
 });
