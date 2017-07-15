@@ -6,6 +6,8 @@
 
 _A simple interpreter for a large subset of Pascal language written for educational purposes_
 
+_This repository contains the code I wrote during these articles - [https://ruslanspivak.com/lsbasi-part1/](https://ruslanspivak.com/lsbasi-part1/)_
+
 ## Known issues
 
 - Procedures declarations are supported by parser and AST, but interpreter doesn't support its execution (there is no implementation for this at all);
