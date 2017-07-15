@@ -8,6 +8,41 @@ _A simple interpreter for a large subset of Pascal language written for educatio
 
 _This repository contains the code I wrote during these articles - [https://ruslanspivak.com/lsbasi-part1/](https://ruslanspivak.com/lsbasi-part1/)_
 
+## Demo
+
+For demonstration purposes I wrote the following code in Pascal:
+
+```pascal
+PROGRAM myProgram;
+VAR
+  number : INTEGER;
+  a, b   : INTEGER;
+  y      : REAL;
+
+BEGIN {myProgram}
+  number := 2;
+  a := number;
+  b := 10 * a + 10 * a DIV 4;
+  y := 20 / 7 + 3.14;
+END.  {myProgram}
+```
+
+Since, there are no I\O implementation in Pascal, I'll show you a GIF where you can see scope of variables before and after interpretation of this program.
+
+Here is the copied output from my demo script (gif below):
+
+```
+----------------------------------
+Program scope before interpreting:
+undefined
+----------------------------------
+Program scope after interpreting:
+{ number: 2, a: 2, b: 25, y: 5.857142857142858 }
+----------------------------------
+```
+
+![Interpreter Demo](https://user-images.githubusercontent.com/3625244/28240074-1186c6d0-6983-11e7-97ab-974c81d07fb9.gif)
+
 ## Known issues
 
 - Procedures declarations are supported by parser and AST, but interpreter doesn't support its execution (there is no implementation for this at all);
