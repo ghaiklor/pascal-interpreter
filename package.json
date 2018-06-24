@@ -21,12 +21,12 @@
   },
   "devDependencies": {
     "chai": "4.1.1",
-    "coveralls": "2.13.1",
-    "eslint": "4.3.0",
-    "eslint-config-node": "1.6.0",
-    "husky": "0.14.3",
+    "coveralls": "2.13.2",
+    "eslint": "4.13.0",
+    "eslint-config-node": "2.0.0",
+    "husky": "0.15.0-beta.2",
     "istanbul": "0.4.5",
-    "mocha": "3.4.2",
-    "sinon": "2.3.8"
+    "mocha": "4.1.0",
+    "sinon": "4.1.3"
   }
 }
