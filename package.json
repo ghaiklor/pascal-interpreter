@@ -24,7 +24,7 @@
     "coveralls": "2.13.2",
     "eslint": "5.16.0",
     "eslint-config-node": "3.0.1",
-    "husky": "2.2.0",
+    "husky": "2.4.0",
     "istanbul": "0.4.5",
     "mocha": "4.1.0",
     "sinon": "7.2.3"
